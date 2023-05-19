@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Moscow arts</string>
+    <string name="auth">Авторизация</string>
+    <string name="registration">Регистрация</string>
+    <string name="email">электронная почта</string>
+    <string name="password">пароль</string>
+    <string name="second_password">повторите пароль</string>
+</resources>
