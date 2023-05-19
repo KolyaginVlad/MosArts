@@ -1,7 +1,6 @@
 package ru.cpc.mosarts.ui.registration
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.cpc.mosarts.domain.models.RegistrateUserCredentials
 import ru.cpc.mosarts.domain.models.UserCredentials
 import ru.cpc.mosarts.domain.repositories.ApiRepository
 import ru.cpc.mosarts.utils.base.BaseViewModel
@@ -28,7 +27,8 @@ class RegistrationViewModel  @Inject constructor(
 		updateState {
 			it.copy(isLoading = true)
 		}
-		apiRepository.registration(RegistrateUserCredentials(currentState.email, currentState.password, currentState.secondpassword)).fold(
+		if (checkPasswords()){
+		apiRepository.registration(UserCredentials(currentState.email, currentState.password)).fold(
 			onFailure = {
 				//logger.event(AuthAnalyticsEvent(false))
 				sendEvent(RegistrationScreenEvent.ShowToast(it.message ?: "Something went wrong"))
@@ -41,5 +41,10 @@ class RegistrationViewModel  @Inject constructor(
 			RegistrationScreenState() //Сбрасываю на начальное состояние
 		}
 	}
+		else {
+			sendEvent(RegistrationScreenEvent.ShowToast( "Different passwords"))
+		}
+	}
+	private fun checkPasswords() =	currentState.secondpassword==currentState.password
 	
 }
