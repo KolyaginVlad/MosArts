@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import ru.cpc.mosarts.ui.auth.NavGraphs
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
