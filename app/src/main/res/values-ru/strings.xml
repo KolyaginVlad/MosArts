@@ -11,4 +11,5 @@
     <string name="father_name">отчество</string>
     <string name="age">возраст</string>
     <string name="phone_number"> номер телефона</string>
+    <string name="auth_by_vk">Авторизоваться через VK</string>
 </resources>

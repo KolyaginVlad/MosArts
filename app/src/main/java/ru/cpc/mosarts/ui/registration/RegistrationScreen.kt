@@ -1,10 +1,13 @@
 package ru.cpc.mosarts.ui.registration
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -17,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,7 +28,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.vk.api.sdk.auth.VKScope
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.auth.Synchronizer
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
@@ -47,9 +53,18 @@ fun RegistrationScreen(
 				).show()
 				
 				is RegistrationScreenEvent.GoToMoreInf -> navigator.navigate(
-					MoreInfScreenDestination
+					MoreInfScreenDestination(it.profileInfo)
 				)
+
+				RegistrationScreenEvent.LoginVk -> {
+					Synchronizer.login(listOf(VKScope.EMAIL, VKScope.FRIENDS))
+				}
 			}
+		}
+	}
+	LaunchedEffect(Unit) {
+		Synchronizer.token.collect {
+			viewModel.onGetVkToken(it)
 		}
 	}
 	RegistrationScreenContent(
@@ -57,7 +72,8 @@ fun RegistrationScreen(
 		onLoginChange = viewModel::onLoginChange,
 		onPasswordChange = viewModel::onPasswordChange,
 		onAuth = viewModel::onAuth,
-		onSecondPasswordChange = viewModel::onSecondPasswordChange
+		onSecondPasswordChange = viewModel::onSecondPasswordChange,
+		onVkAuth = viewModel::onVkAuth
 	)
 }
 
@@ -68,6 +84,7 @@ fun RegistrationScreenContent(
 	onPasswordChange: (String) -> Unit,
 	onSecondPasswordChange: (String) -> Unit,
 	onAuth: () -> Unit,
+	onVkAuth: () -> Unit,
 ) {
 	Scaffold(
 		topBar = {
@@ -114,6 +131,14 @@ fun RegistrationScreenContent(
 					Text(text = stringResource(id = R.string.registration))
 				}
 			}
+			Spacer(32.dp)
+			Image(
+				modifier = Modifier
+					.size(48.dp)
+					.clickable(onClick = onVkAuth),
+				painter = painterResource(R.drawable.vk),
+				contentDescription = stringResource(R.string.auth_by_vk)
+			)
 		}
 	}
 }
