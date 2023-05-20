@@ -3,6 +3,7 @@ package ru.cpc.mosarts.ui.moreinf
 import androidx.core.text.isDigitsOnly
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.cpc.mosarts.domain.models.MoreInf
+import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.domain.usecases.MoreInfUseCase
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class MoreInfViewModel @Inject constructor(
 	
 	fun OnSurnameChange(name: String) {
 		updateState {
-			it.copy(surName = name)
+			it.copy(surname = name)
 		}
 	}
 	
@@ -58,7 +59,7 @@ class MoreInfViewModel @Inject constructor(
 				avatar = currentState.avatar,
 				name = currentState.name,
 				fatherName = currentState.fatherName,
-				surname = currentState.surName
+				surname = currentState.surname
 			)
 		).fold(
 			onFailure = {
@@ -69,6 +70,17 @@ class MoreInfViewModel @Inject constructor(
 		)
 		updateState {
 			MoreInfScreenState() //Сбрасываю на начальное состояние
+		}
+	}
+
+	fun setProfileInfo(profileInfo: ProfileInfo?) {
+		if (profileInfo != null) {
+			updateState {
+				it.copy(name = profileInfo.name, surname = profileInfo.surname)
+			}
+			//Это ВК регистрация
+		} else {
+			//Это регистрация через почту
 		}
 	}
 }

@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
@@ -31,11 +32,13 @@ import ru.cpc.mosarts.ui.views.Spacer
 @Composable
 fun MoreInfScreen(
 	navigator: DestinationsNavigator,
-	viewModel: MoreInfViewModel = hiltViewModel()
+	viewModel: MoreInfViewModel = hiltViewModel(),
+	profileInfo: ProfileInfo?
 ) {
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
 	val context = LocalContext.current
 	LaunchedEffect(Unit) {
+		viewModel.setProfileInfo(profileInfo)
 		viewModel.event.collect {
 			when (it) {
 				is MoreInfScreenEvent.ShowToast -> Toast.makeText(
@@ -88,7 +91,7 @@ fun MoreInfScreenContent(
 			)
 			Spacer(16.dp)
 			FormTextField(
-				value = state.surName,
+				value = state.surname,
 				onValueChange = onSurnameChange,
 				label = {
 					Text(text = stringResource(id = R.string.surname))
