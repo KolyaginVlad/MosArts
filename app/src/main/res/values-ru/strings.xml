@@ -6,4 +6,9 @@
     <string name="email">электронная почта</string>
     <string name="password">пароль</string>
     <string name="second_password">повторите пароль</string>
+    <string name="name">имя</string>
+    <string name="surname">фамилия</string>
+    <string name="father_name">отчество</string>
+    <string name="age">возраст</string>
+    <string name="phone_number"> номер телефона</string>
 </resources>

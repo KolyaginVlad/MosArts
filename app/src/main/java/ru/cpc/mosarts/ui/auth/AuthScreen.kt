@@ -10,7 +10,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
+import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
 @Destination
@@ -44,13 +43,6 @@ fun AuthScreen(
 				is AuthScreenEvent.ShowToast -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
-				
-				is AuthScreenEvent.GoToList -> {
-					// navigator.navigate(ListScreenDestination.route)
-					Toast.makeText(
-						context, "Авторизация", Toast.LENGTH_LONG
-					).show()
-				}
 			}
 		}
 	}
@@ -76,16 +68,32 @@ fun AuthScreenContent(
 	) {
 		Column(
 			modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
+				.fillMaxSize()
+				.padding(it),
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Text(text = stringResource(id = R.string.auth))
 			Spacer(32.dp)
-			TextField(value = state.email, onValueChange = onLoginChange)
+			FormTextField(
+				value = state.email,
+				onValueChange = onLoginChange,
+				label = ({
+					Text(
+						text = stringResource(id = R.string.email)
+					)
+				})
+			)
 			Spacer(16.dp)
-			TextField(value = state.password, onValueChange = onPasswordChange)
+			FormTextField(
+				value = state.password,
+				onValueChange = onPasswordChange,
+				label = ({
+					Text(
+						text = stringResource(id = R.string.password)
+					)
+				})
+			)
 			Spacer(32.dp)
 			Button(enabled = state.isLoading.not(), onClick = onAuth) {
 				if (state.isLoading) {
@@ -97,6 +105,7 @@ fun AuthScreenContent(
 		}
 	}
 }
+
 
 @Preview
 @Composable

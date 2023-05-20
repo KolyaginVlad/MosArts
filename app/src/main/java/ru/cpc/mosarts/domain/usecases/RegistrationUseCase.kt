@@ -5,11 +5,11 @@ import ru.cpc.mosarts.domain.models.UserCredentials
 import ru.cpc.mosarts.domain.repositories.ApiRepository
 import javax.inject.Inject
 
-abstract class LoginUseCase : UseCase<Unit, UserCredentials>()
+abstract class RegistrationUseCase : UseCase<Unit, UserCredentials>()
 
-class LoginUseCaseImpl @Inject constructor(
+class RegistrationUseCaseImpl @Inject constructor(
 	private val apiRepository: ApiRepository,
-) : LoginUseCase() {
+) : RegistrationUseCase() {
 	override suspend fun run(args: UserCredentials): Result<Unit> =
-		apiRepository.login(args)
+		apiRepository.registration(args)
 }

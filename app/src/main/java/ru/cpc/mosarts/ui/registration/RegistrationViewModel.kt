@@ -2,14 +2,14 @@ package ru.cpc.mosarts.ui.registration
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.cpc.mosarts.domain.models.UserCredentials
-import ru.cpc.mosarts.domain.repositories.ApiRepository
+import ru.cpc.mosarts.domain.usecases.RegistrationUseCase
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 
-class RegistrationViewModel  @Inject constructor(
-	private val apiRepository: ApiRepository,
+class RegistrationViewModel @Inject constructor(
+	private val registrationUseCase: RegistrationUseCase,
 ) : BaseViewModel<RegistrationScreenState, RegistrationScreenEvent>(RegistrationScreenState()) {
 	fun onLoginChange(login: String) {
 		updateState {
@@ -23,28 +23,41 @@ class RegistrationViewModel  @Inject constructor(
 		}
 	}
 	
+	fun onSecondPasswordChange(password: String) {
+		updateState {
+			it.copy(secondpassword = password)
+		}
+	}
+	
 	fun onAuth() = launchViewModelScope {
 		updateState {
 			it.copy(isLoading = true)
 		}
-		if (checkPasswords()){
-		apiRepository.registration(UserCredentials(currentState.email, currentState.password)).fold(
-			onFailure = {
-				//logger.event(AuthAnalyticsEvent(false))
-				sendEvent(RegistrationScreenEvent.ShowToast(it.message ?: "Something went wrong"))
-			}, onSuccess = {
-				//logger.event(AuthAnalyticsEvent(true))
-				sendEvent(RegistrationScreenEvent.GoToMoreInf)
+		if (checkPasswords()) {
+			registrationUseCase.run(UserCredentials(currentState.email, currentState.password))
+				.fold(
+					onFailure = {
+						sendEvent(
+							RegistrationScreenEvent.ShowToast(
+								it.message ?: "Something went wrong"
+							)
+						)
+					}, onSuccess = {
+						// TODO:
+						sendEvent(RegistrationScreenEvent.GoToMoreInf)
+					}
+				)
+			updateState {
+				RegistrationScreenState() //Сбрасываю на начальное состояние
 			}
-		)
-		updateState {
-			RegistrationScreenState() //Сбрасываю на начальное состояние
+		} else {
+			sendEvent(RegistrationScreenEvent.ShowToast("Different passwords"))
+			updateState {
+				it.copy(isLoading = false)
+			}
 		}
 	}
-		else {
-			sendEvent(RegistrationScreenEvent.ShowToast( "Different passwords"))
-		}
-	}
-	private fun checkPasswords() =	currentState.secondpassword==currentState.password
+	
+	private fun checkPasswords() = currentState.secondpassword == currentState.password
 	
 }
