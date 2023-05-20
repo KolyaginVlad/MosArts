@@ -13,9 +13,7 @@ import ru.cpc.mosarts.domain.repositories.UserRepository
 interface DataModule {
 	//Тут Binds
 	@Binds
-	fun UserRepositoryImpl.bindApiRepository(
-		userRepositoryImpl: UserRepositoryImpl,
-	): UserRepository
+	fun UserRepositoryImpl.bindApiRepository():UserRepository
 	
 	companion object {
 		//Тут Provides
