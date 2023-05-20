@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.moreinf
+package ru.cpc.mosarts.ui.authorization.auth
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -18,51 +18,47 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
 @Destination
 @Composable
-fun MoreInfScreen(
+fun AuthScreen(
 	navigator: DestinationsNavigator,
-	viewModel: MoreInfViewModel = hiltViewModel()
+	viewModel: AuthViewModel = hiltViewModel()
 ) {
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
 	val context = LocalContext.current
 	LaunchedEffect(Unit) {
 		viewModel.event.collect {
 			when (it) {
-				is MoreInfScreenEvent.ShowToast -> Toast.makeText(
+				is AuthScreenEvent.ShowToast -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
 			}
 		}
 	}
-	MoreInfScreenContent(
+	AuthScreenContent(
 		state = state,
-		onNameChange = viewModel::OnNameChange,
-		onSurnameChange = viewModel::OnSurnameChange,
-		onAuth = viewModel::onAuth,
-		onFatherNameChange = viewModel::OnFatherNameChange,
-		onPhoneNumberChange = viewModel::OnPhoneNumberChange,
-		onAgeChange = viewModel::OnAgeChange
+		onLoginChange = viewModel::onLoginChange,
+		onPasswordChange = viewModel::onPasswordChange,
+		onAuth = viewModel::onAuth
 	)
 }
 
 @Composable
-fun MoreInfScreenContent(
-	state: MoreInfScreenState,
-	onNameChange: (String) -> Unit,
-	onSurnameChange: (String) -> Unit,
-	onFatherNameChange: (String) -> Unit,
-	onPhoneNumberChange: (String) -> Unit,
-	onAgeChange: (String) -> Unit,
+fun AuthScreenContent(
+	state: AuthScreenState,
+	onLoginChange: (String) -> Unit,
+	onPasswordChange: (String) -> Unit,
 	onAuth: () -> Unit,
 ) {
 	Scaffold(
@@ -77,45 +73,25 @@ fun MoreInfScreenContent(
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			Text(text = stringResource(id = R.string.registration))
+			Text(text = stringResource(id = R.string.auth))
 			Spacer(32.dp)
 			FormTextField(
-				value = state.name,
-				onValueChange = onNameChange,
+				value = state.email,
+				onValueChange = onLoginChange,
 				label = {
-					Text(text = stringResource(id = R.string.name))
+					Text(
+						text = stringResource(id = R.string.email)
+					)
 				}
 			)
 			Spacer(16.dp)
 			FormTextField(
-				value = state.surName,
-				onValueChange = onSurnameChange,
+				value = state.password,
+				onValueChange = onPasswordChange,
 				label = {
-					Text(text = stringResource(id = R.string.surname))
-				}
-			)
-			Spacer(16.dp)
-			FormTextField(
-				value = state.fatherName,
-				onValueChange = onFatherNameChange,
-				label = {
-					Text(text = stringResource(id = R.string.father_name))
-				}
-			)
-			Spacer(16.dp)
-			FormTextField(
-				value = state.phoneNumber,
-				onValueChange = onPhoneNumberChange,
-				label = {
-					Text(text = stringResource(id = R.string.phone_number))
-				}
-			)
-			Spacer(16.dp)
-			FormTextField(
-				value = state.age,
-				onValueChange = onAgeChange,
-				label = {
-					Text(text = stringResource(id = R.string.age))
+					Text(
+						text = stringResource(id = R.string.password)
+					)
 				}
 			)
 			Spacer(32.dp)
@@ -123,9 +99,18 @@ fun MoreInfScreenContent(
 				if (state.isLoading) {
 					CircularProgressIndicator(color = MaterialTheme.colors.onPrimary)
 				} else {
-					Text(text = stringResource(id = R.string.registration))
+					Text(text = stringResource(id = R.string.auth))
 				}
 			}
 		}
+	}
+}
+
+
+@Preview
+@Composable
+private fun AuthScreenPreview() {
+	MosArtsTheme {
+		AuthScreenContent(AuthScreenState("123", "321"), { }, { }, { })
 	}
 }

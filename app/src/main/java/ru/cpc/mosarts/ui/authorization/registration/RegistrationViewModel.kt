@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.registration
+package ru.cpc.mosarts.ui.authorization.registration
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.cpc.mosarts.domain.models.UserCredentials

@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.moreinf
+package ru.cpc.mosarts.ui.authorization.moreinf
 
 import ru.cpc.mosarts.utils.base.State
 

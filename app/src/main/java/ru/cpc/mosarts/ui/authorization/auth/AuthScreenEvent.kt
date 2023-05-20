@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.auth
+package ru.cpc.mosarts.ui.authorization.auth
 
 import ru.cpc.mosarts.utils.base.Event
 

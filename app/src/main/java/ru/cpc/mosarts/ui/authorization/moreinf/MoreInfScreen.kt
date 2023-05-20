@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.registration
+package ru.cpc.mosarts.ui.authorization.moreinf
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -22,51 +22,47 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
-import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
-
-@RootNavGraph(start = true)
 @Destination
 @Composable
-fun RegistrationScreen(
+fun MoreInfScreen(
 	navigator: DestinationsNavigator,
-	viewModel: RegistrationViewModel = hiltViewModel()
+	viewModel: MoreInfViewModel = hiltViewModel()
 ) {
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
 	val context = LocalContext.current
 	LaunchedEffect(Unit) {
 		viewModel.event.collect {
 			when (it) {
-				is RegistrationScreenEvent.ShowToast -> Toast.makeText(
+				is MoreInfScreenEvent.ShowToast -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
-				
-				is RegistrationScreenEvent.GoToMoreInf -> navigator.navigate(
-					MoreInfScreenDestination
-				)
 			}
 		}
 	}
-	RegistrationScreenContent(
+	MoreInfScreenContent(
 		state = state,
-		onLoginChange = viewModel::onLoginChange,
-		onPasswordChange = viewModel::onPasswordChange,
+		onNameChange = viewModel::OnNameChange,
+		onSurnameChange = viewModel::OnSurnameChange,
 		onAuth = viewModel::onAuth,
-		onSecondPasswordChange = viewModel::onSecondPasswordChange
+		onFatherNameChange = viewModel::OnFatherNameChange,
+		onPhoneNumberChange = viewModel::OnPhoneNumberChange,
+		onAgeChange = viewModel::OnAgeChange
 	)
 }
 
 @Composable
-fun RegistrationScreenContent(
-	state: RegistrationScreenState,
-	onLoginChange: (String) -> Unit,
-	onPasswordChange: (String) -> Unit,
-	onSecondPasswordChange: (String) -> Unit,
+fun MoreInfScreenContent(
+	state: MoreInfScreenState,
+	onNameChange: (String) -> Unit,
+	onSurnameChange: (String) -> Unit,
+	onFatherNameChange: (String) -> Unit,
+	onPhoneNumberChange: (String) -> Unit,
+	onAgeChange: (String) -> Unit,
 	onAuth: () -> Unit,
 ) {
 	Scaffold(
@@ -84,26 +80,42 @@ fun RegistrationScreenContent(
 			Text(text = stringResource(id = R.string.registration))
 			Spacer(32.dp)
 			FormTextField(
-				value = state.email,
-				onValueChange = onLoginChange,
+				value = state.name,
+				onValueChange = onNameChange,
 				label = {
-					Text(text = stringResource(id = R.string.email))
+					Text(text = stringResource(id = R.string.name))
 				}
 			)
 			Spacer(16.dp)
 			FormTextField(
-				value = state.password,
-				onValueChange = onPasswordChange,
-				label = ({
-					Text(text = stringResource(id = R.string.password))
-				})
+				value = state.surName,
+				onValueChange = onSurnameChange,
+				label = {
+					Text(text = stringResource(id = R.string.surname))
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
-				value = state.secondPassword,
-				onValueChange = onSecondPasswordChange,
+				value = state.fatherName,
+				onValueChange = onFatherNameChange,
 				label = {
-					Text(text = stringResource(id = R.string.second_password))
+					Text(text = stringResource(id = R.string.father_name))
+				}
+			)
+			Spacer(16.dp)
+			FormTextField(
+				value = state.phoneNumber,
+				onValueChange = onPhoneNumberChange,
+				label = {
+					Text(text = stringResource(id = R.string.phone_number))
+				}
+			)
+			Spacer(16.dp)
+			FormTextField(
+				value = state.age,
+				onValueChange = onAgeChange,
+				label = {
+					Text(text = stringResource(id = R.string.age))
 				}
 			)
 			Spacer(32.dp)
