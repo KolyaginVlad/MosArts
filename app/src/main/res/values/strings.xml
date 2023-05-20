@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name" translatable="false">Moscow arts</string>
-    <string name="auth_by_vk">Аuthorization by VK</string>
-    <string name="auth">Аuthorization</string>
+    <string name="app_name">Moscow arts</string>
 </resources>
