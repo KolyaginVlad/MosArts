@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Moscow arts</string>
+    <string name="auth">Авторизация</string>
+    <string name="registration">Регистрация</string>
+    <string name="email">электронная почта</string>
+    <string name="password">пароль</string>
+    <string name="second_password">повторите пароль</string>
+    <string name="name">имя</string>
+    <string name="surname">фамилия</string>
+    <string name="father_name">отчество</string>
+    <string name="age">возраст</string>
+    <string name="phone_number"> номер телефона</string>
+</resources>
