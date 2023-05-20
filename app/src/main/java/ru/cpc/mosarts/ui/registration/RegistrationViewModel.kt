@@ -25,7 +25,7 @@ class RegistrationViewModel @Inject constructor(
 	
 	fun onSecondPasswordChange(password: String) {
 		updateState {
-			it.copy(secondpassword = password)
+			it.copy(secondPassword = password)
 		}
 	}
 	
@@ -58,6 +58,6 @@ class RegistrationViewModel @Inject constructor(
 		}
 	}
 	
-	private fun RegistrationScreenState.checkPasswords() = secondpassword == password
+	private fun RegistrationScreenState.checkPasswords() = secondPassword == password
 	
 }

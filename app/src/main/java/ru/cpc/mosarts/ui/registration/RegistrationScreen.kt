@@ -100,7 +100,7 @@ fun RegistrationScreenContent(
 			)
 			Spacer(16.dp)
 			FormTextField(
-				value = state.secondpassword,
+				value = state.secondPassword,
 				onValueChange = onSecondPasswordChange,
 				label = {
 					Text(text = stringResource(id = R.string.second_password))

@@ -11,12 +11,13 @@ import ru.cpc.mosarts.domain.repositories.UserRepository
 @InstallIn(SingletonComponent::class)
 @Module
 interface DataModule {
-    //Тут Binds
-    @Binds
-    fun bindApiRepository(
-        userRepositoryImpl: UserRepositoryImpl,
-    ): UserRepository
-    companion object {
-        //Тут Provides
-    }
+	//Тут Binds
+	@Binds
+	fun UserRepositoryImpl.bindApiRepository(
+		userRepositoryImpl: UserRepositoryImpl,
+	): UserRepository
+	
+	companion object {
+		//Тут Provides
+	}
 }
