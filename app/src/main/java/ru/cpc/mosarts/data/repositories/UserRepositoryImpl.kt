@@ -3,10 +3,10 @@ package ru.cpc.mosarts.data.repositories
 import ru.cpc.mosarts.data.models.mapToDtoe
 import ru.cpc.mosarts.domain.models.MoreInf
 import ru.cpc.mosarts.domain.models.UserCredentials
-import ru.cpc.mosarts.domain.repositories.ApiRepository
+import ru.cpc.mosarts.domain.repositories.UserRepository
 import javax.inject.Inject
 
-class ApiRepositoryImpl @Inject constructor() : ApiRepository {
+class UserRepositoryImpl @Inject constructor() : UserRepository {
 	override suspend fun login(userCredentials: UserCredentials): Result<Unit> {
 		val user = userCredentials.mapToDtoe()
 		//delay(1000)

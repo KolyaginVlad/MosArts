@@ -51,14 +51,14 @@ class MoreInfViewModel @Inject constructor(
 		updateState {
 			it.copy(isLoading = true)
 		}
-		moreInfUseCase.run(
+		moreInfUseCase(
 			MoreInf(
 				age = currentState.age.toInt(),
-				phoneNumber = currentState.phoneNumber,
+				phonenumber = currentState.phoneNumber,
 				avatar = currentState.avatar,
 				name = currentState.name,
 				fatherName = currentState.fatherName,
-				surName = currentState.surName
+				surname = currentState.surName
 			)
 		).fold(
 			onFailure = {

@@ -33,8 +33,8 @@ class RegistrationViewModel @Inject constructor(
 		updateState {
 			it.copy(isLoading = true)
 		}
-		if (checkPasswords()) {
-			registrationUseCase.run(UserCredentials(currentState.email, currentState.password))
+		if (currentState.checkPasswords()) {
+			registrationUseCase(UserCredentials(currentState.email, currentState.password))
 				.fold(
 					onFailure = {
 						sendEvent(
@@ -58,6 +58,6 @@ class RegistrationViewModel @Inject constructor(
 		}
 	}
 	
-	private fun checkPasswords() = currentState.secondpassword == currentState.password
+	private fun RegistrationScreenState.checkPasswords() = secondpassword == password
 	
 }

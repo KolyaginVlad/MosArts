@@ -27,7 +27,7 @@ class AuthViewModel @Inject constructor(
 		updateState {
 			it.copy(isLoading = true)
 		}
-		loginUseCase.run(UserCredentials(currentState.email, currentState.password)).fold(
+		loginUseCase(UserCredentials(currentState.email, currentState.password)).fold(
 			onFailure = {
 				sendEvent(AuthScreenEvent.ShowToast(it.message ?: "Something went wrong"))
 			}, onSuccess = {

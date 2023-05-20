@@ -78,21 +78,21 @@ fun AuthScreenContent(
 			FormTextField(
 				value = state.email,
 				onValueChange = onLoginChange,
-				label = ({
+				label = {
 					Text(
 						text = stringResource(id = R.string.email)
 					)
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
 				value = state.password,
 				onValueChange = onPasswordChange,
-				label = ({
+				label = {
 					Text(
 						text = stringResource(id = R.string.password)
 					)
-				})
+				}
 			)
 			Spacer(32.dp)
 			Button(enabled = state.isLoading.not(), onClick = onAuth) {

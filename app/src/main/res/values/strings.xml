@@ -8,7 +8,7 @@
     <string name="second_password">repeat your password</string>
     <string name="name">name</string>
     <string name="surname">surname</string>
-    <string name="father_name">father name</string>
+    <string name="father_name">patronymic</string>
     <string name="age">age</string>
     <string name="phone_number"> phone number</string>
 </resources>

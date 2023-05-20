@@ -86,9 +86,9 @@ fun RegistrationScreenContent(
 			FormTextField(
 				value = state.email,
 				onValueChange = onLoginChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.email))
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
@@ -102,9 +102,9 @@ fun RegistrationScreenContent(
 			FormTextField(
 				value = state.secondpassword,
 				onValueChange = onSecondPasswordChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.second_password))
-				})
+				}
 			)
 			Spacer(32.dp)
 			Button(enabled = state.isLoading.not(), onClick = onAuth) {

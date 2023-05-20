@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 fun FormTextField(
 	value: String,
 	onValueChange: (String) -> Unit,
-	label: (@Composable() (() -> Unit)?)
+	label: @Composable() (() -> Unit)
 ) {
 	TextField(value = value, onValueChange = onValueChange, label = label)
 }

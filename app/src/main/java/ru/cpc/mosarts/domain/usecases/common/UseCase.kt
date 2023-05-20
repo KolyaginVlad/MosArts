@@ -29,5 +29,5 @@ abstract class UseCase<out Type, Args> {
      * @param args аргументы
      * @return результат
      */
-    abstract suspend fun run(args: Args): Result<Type>
+    protected abstract suspend fun run(args: Args): Result<Type>
 }

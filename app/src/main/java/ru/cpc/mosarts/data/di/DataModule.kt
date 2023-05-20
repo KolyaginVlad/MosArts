@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.cpc.mosarts.data.repositories.ApiRepositoryImpl
-import ru.cpc.mosarts.domain.repositories.ApiRepository
+import ru.cpc.mosarts.data.repositories.UserRepositoryImpl
+import ru.cpc.mosarts.domain.repositories.UserRepository
 
 
 @InstallIn(SingletonComponent::class)
@@ -14,8 +14,8 @@ interface DataModule {
     //Тут Binds
     @Binds
     fun bindApiRepository(
-        apiRepositoryImpl: ApiRepositoryImpl,
-    ): ApiRepository
+        userRepositoryImpl: UserRepositoryImpl,
+    ): UserRepository
     companion object {
         //Тут Provides
     }

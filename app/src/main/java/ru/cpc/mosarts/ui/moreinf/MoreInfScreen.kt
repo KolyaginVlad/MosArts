@@ -82,41 +82,41 @@ fun MoreInfScreenContent(
 			FormTextField(
 				value = state.name,
 				onValueChange = onNameChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.name))
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
 				value = state.surName,
 				onValueChange = onSurnameChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.surname))
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
 				value = state.fatherName,
 				onValueChange = onFatherNameChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.father_name))
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
 				value = state.phoneNumber,
 				onValueChange = onPhoneNumberChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.phone_number))
-				})
+				}
 			)
 			Spacer(16.dp)
 			FormTextField(
 				value = state.age,
 				onValueChange = onAgeChange,
-				label = ({
+				label = {
 					Text(text = stringResource(id = R.string.age))
-				})
+				}
 			)
 			Spacer(32.dp)
 			Button(enabled = state.isLoading.not(), onClick = onAuth) {
