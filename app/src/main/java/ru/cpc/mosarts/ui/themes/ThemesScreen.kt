@@ -1,17 +1,11 @@
 package ru.cpc.mosarts.ui.themes
 
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -21,19 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDirection.Companion.Content
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 import ru.cpc.mosarts.ui.themes.views.ThemesCheckBoxGroup
-import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Loading
-import ru.cpc.mosarts.ui.views.Spacer
 
 @Composable
 @Destination
@@ -64,7 +53,6 @@ private fun Content(
     onSelectTheme: (ThemeUiData, Boolean) -> Unit,
     onDone: () -> Unit,
 ) {
-    Log.d("Content", state.toString())
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(stringResource(id = R.string.app_name)) })
