@@ -13,7 +13,7 @@ class MoreInfViewModel @Inject constructor(
 	private val moreInfUseCase: MoreInfUseCase,
 ) : BaseViewModel<MoreInfScreenState, MoreInfScreenEvent>(MoreInfScreenState()) {
 	
-	fun OnAgeChange(age: String) {
+	fun onAgeChange(age: String) {
 		if (age.isDigitsOnly()) {
 			updateState {
 				it.copy(age = age)
@@ -24,25 +24,25 @@ class MoreInfViewModel @Inject constructor(
 	}
 	
 	
-	fun OnPhoneNumberChange(number: String) {
+	fun onPhoneNumberChange(number: String) {
 		updateState {
 			it.copy(phoneNumber = number)
 		}
 	}
 	
-	fun OnNameChange(name: String) {
+	fun onNameChange(name: String) {
 		updateState {
 			it.copy(name = name)
 		}
 	}
 	
-	fun OnFatherNameChange(name: String) {
+	fun onFatherNameChange(name: String) {
 		updateState {
 			it.copy(fatherName = name)
 		}
 	}
 	
-	fun OnSurnameChange(name: String) {
+	fun onSurnameChange(name: String) {
 		updateState {
 			it.copy(surname = name)
 		}
@@ -54,7 +54,7 @@ class MoreInfViewModel @Inject constructor(
 		}
 		moreInfUseCase(
 			MoreInf(
-				age = currentState.age.toInt(),
+				age = currentState.age.toIntOrNull(),
 				phonenumber = currentState.phoneNumber,
 				avatar = currentState.avatar,
 				name = currentState.name,
@@ -65,7 +65,7 @@ class MoreInfViewModel @Inject constructor(
 			onFailure = {
 				sendEvent(MoreInfScreenEvent.ShowToast(it.message ?: "Something went wrong"))
 			}, onSuccess = {
-				// TODO:
+				sendEvent(MoreInfScreenEvent.GoToTest)
 			}
 		)
 		updateState {

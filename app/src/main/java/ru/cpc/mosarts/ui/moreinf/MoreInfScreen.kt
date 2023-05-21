@@ -25,6 +25,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.domain.models.ProfileInfo
+import ru.cpc.mosarts.ui.destinations.ThemesScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
@@ -44,17 +45,19 @@ fun MoreInfScreen(
 				is MoreInfScreenEvent.ShowToast -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
+
+				MoreInfScreenEvent.GoToTest -> navigator.navigate(ThemesScreenDestination)
 			}
 		}
 	}
 	MoreInfScreenContent(
 		state = state,
-		onNameChange = viewModel::OnNameChange,
-		onSurnameChange = viewModel::OnSurnameChange,
+		onNameChange = viewModel::onNameChange,
+		onSurnameChange = viewModel::onSurnameChange,
 		onAuth = viewModel::onAuth,
-		onFatherNameChange = viewModel::OnFatherNameChange,
-		onPhoneNumberChange = viewModel::OnPhoneNumberChange,
-		onAgeChange = viewModel::OnAgeChange
+		onFatherNameChange = viewModel::onFatherNameChange,
+		onPhoneNumberChange = viewModel::onPhoneNumberChange,
+		onAgeChange = viewModel::onAgeChange
 	)
 }
 

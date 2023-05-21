@@ -13,4 +13,6 @@
     <string name="age">age</string>
     <string name="phone_number"> phone number</string>
     <string name="auth_by_vk">Auth by VK</string>
+    <string name="select_themes">Select the areas of interest</string>
+    <string name="done">Done</string>
 </resources>
