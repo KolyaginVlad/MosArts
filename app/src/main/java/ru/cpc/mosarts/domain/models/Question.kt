@@ -21,6 +21,7 @@ data class QuestionVal(
 )
 
 enum class QuestionType {
+	TextText,
 	TextOptions,
 	ImageConnect,
 	MusicImage,
