@@ -12,4 +12,6 @@
     <string name="age">возраст</string>
     <string name="phone_number"> номер телефона</string>
     <string name="auth_by_vk">Авторизоваться через VK</string>
+    <string name="select_themes">Выберите интересующие направления</string>
+    <string name="done">Готово</string>
 </resources>
