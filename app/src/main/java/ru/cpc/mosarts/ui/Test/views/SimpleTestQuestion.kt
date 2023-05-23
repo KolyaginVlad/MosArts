@@ -53,6 +53,7 @@ fun QuestionField(
 	
 	Box(modifier = modifier) {
 		when (question.questionType) {
+			QuestionType.TextText -> question.question.textQuestion?.let { TextQuestion(question = it) }
 			QuestionType.TextOptions -> question.question.textQuestion?.let { TextQuestion(question = it) }
 			QuestionType.ImageConnect -> {
 				Column {
@@ -102,6 +103,12 @@ fun AnswerField(
 ) {
 	Box(modifier = modifier) {
 		when (question.questionType) {
+			QuestionType.TextText -> TextAnswer(
+				answer = answer,
+				question = question,
+				onAnswerChange = onAnswerChange
+			)
+			
 			QuestionType.TextOptions ->
 				OptionsAnswer(
 					question = question,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.Top
@@ -27,7 +28,7 @@ import ru.cpc.mosarts.domain.models.UserAnswer
 import ru.cpc.mosarts.ui.test.views.players.Player
 import ru.cpc.mosarts.ui.views.Spacer
 
-/*
+
 @Composable
 fun TextAnswer(
 	answer: UserAnswer,
@@ -42,12 +43,11 @@ fun TextAnswer(
 			onAnswerChange(
 				UserAnswer(
 					textAnswer = it,
-					questionId = question.questionId
 				)
 			)
 		})
 }
-*/
+
 
 @Composable
 fun OptionsAnswer(
@@ -80,16 +80,9 @@ fun OptionsAnswer(
 }
 
 fun borderColor(answer: UserAnswer, question: Question, it: AnswerVariant) =
-	if (checkAns(
-			answer,
-			question
-		) && it.textVariant == answer.textAnswer
-	) Color.Green
+	if (it.textVariant == question.rightAnswer.textAnswer && answer.textAnswer != null) Color.Green
 	else if (it.textVariant == answer.textAnswer) Color.Red
 	else Color.White
-
-
-fun checkAns(answer: UserAnswer, question: Question) = answer == question.rightAnswer
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
