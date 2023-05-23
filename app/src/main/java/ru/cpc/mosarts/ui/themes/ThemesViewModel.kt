@@ -59,6 +59,7 @@ class ThemesViewModel @Inject constructor(
             updateState {
                 it.copy(isLoading = false)
             }
+            sendEvent(ThemesScreenEvent.GoToMap)
         }
     }
 }

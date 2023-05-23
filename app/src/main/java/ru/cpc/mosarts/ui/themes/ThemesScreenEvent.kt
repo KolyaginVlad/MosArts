@@ -4,4 +4,5 @@ import ru.cpc.mosarts.utils.base.Event
 
 sealed class ThemesScreenEvent : Event(){
     object Error: ThemesScreenEvent()
+    object GoToMap : ThemesScreenEvent()
 }

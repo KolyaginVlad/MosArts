@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.vk.api.sdk.VK
+import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
 import ru.cpc.mosarts.ui.auth.Synchronizer
 
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MapKitFactory.initialize(this)
         setContent {
             LaunchedEffect(Unit) {
                 Synchronizer.login.collect {
