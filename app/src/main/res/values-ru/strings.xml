@@ -11,4 +11,16 @@
     <string name="father_name">отчество</string>
     <string name="age">возраст</string>
     <string name="phone_number"> номер телефона</string>
+    <string name="finish_test">закончить тест</string>
+    <string name="next_question"> следующий вопрос </string>
+    <string name="previous_question"> предыдущий вопрос </string>
+    <string name="test_is_finished"> Тест завершён </string>
+    <string name="test_points"> Вы заработали  </string>
+
+    <plurals name="points">
+        <item quantity="one"> очко</item>
+        <item quantity="few"> очка</item>
+        <item quantity="many"> очков</item>
+        <item quantity="other"> очков</item>
+    </plurals>
 </resources>

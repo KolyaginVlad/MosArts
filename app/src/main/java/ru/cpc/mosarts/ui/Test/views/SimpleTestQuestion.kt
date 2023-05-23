@@ -1,23 +1,45 @@
 package ru.cpc.mosarts.ui.test.views
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import ru.cpc.mosarts.domain.models.AnswerType
+import androidx.compose.ui.unit.dp
 import ru.cpc.mosarts.domain.models.Question
+import ru.cpc.mosarts.domain.models.QuestionType
 import ru.cpc.mosarts.domain.models.UserAnswer
+import ru.cpc.mosarts.ui.views.Spacer
 
 @Composable
 fun SimpleTestQuestion(
 	question: Question,
 	answer: UserAnswer,
+	player: MediaPlayer,
 	onAnswerChange: (UserAnswer) -> Unit,
 	modifier: Modifier = Modifier
 ) {
-	Column(modifier = modifier) {
-		QuestionField(question = question)
-		AnswerField(question = question, answer = answer, onAnswerChange = onAnswerChange)
+	Column(
+		modifier = modifier
+			.fillMaxWidth()
+			.padding(10.dp)
+	) {
+		QuestionField(
+			question = question,
+			modifier = Modifier.align(CenterHorizontally),
+			player = player
+		)
+		AnswerField(
+			question = question,
+			answer = answer,
+			onAnswerChange = onAnswerChange,
+			modifier = Modifier.align(CenterHorizontally),
+			player = player
+		)
 	}
 }
 
@@ -25,12 +47,48 @@ fun SimpleTestQuestion(
 @Composable
 fun QuestionField(
 	question: Question,
-	modifier: Modifier = Modifier
+	modifier: Modifier = Modifier,
+	player: MediaPlayer
 ) {
+	
 	Box(modifier = modifier) {
-		question.question.textQuestion?.let { TextQuestion(question = it) }
-		question.question.imageQuestion?.let { }
-		question.question.musicQuestion?.let { }
+		when (question.questionType) {
+			QuestionType.TextOptions -> question.question.textQuestion?.let { TextQuestion(question = it) }
+			QuestionType.ImageConnect -> {
+				Column {
+					question.question.textQuestion?.let { TextQuestion(question = it) }
+					Spacer(size = 20.dp)
+					question.question.source?.let {
+						ImageQuestion(
+							question = it
+						)
+					}
+				}
+			}
+			
+			QuestionType.VideoMusic -> {
+				Column {
+					question.question.textQuestion?.let { TextQuestion(question = it) }
+					Spacer(size = 20.dp)
+					question.question.source?.let {
+						VideoQuestion(
+							question = it,
+							modifier = Modifier.height(150.dp)
+						)
+					}
+				}
+			}
+			
+			QuestionType.MusicImage -> {
+				Column {
+					question.question.textQuestion?.let { TextQuestion(question = it) }
+					Spacer(size = 20.dp)
+					question.question.source?.let { MusicQuestion(player = player, question = it) }
+				}
+			}
+			
+			QuestionType.TextDraw -> question.question.textQuestion?.let { TextQuestion(question = it) }
+		}
 	}
 }
 
@@ -39,24 +97,37 @@ fun AnswerField(
 	question: Question,
 	answer: UserAnswer,
 	onAnswerChange: (UserAnswer) -> Unit,
-	modifier: Modifier = Modifier
+	modifier: Modifier = Modifier,
+	player: MediaPlayer
 ) {
 	Box(modifier = modifier) {
-		when (question.answerType) {
-			AnswerType.Text ->
-				TextAnswer(
-					answer = answer,
+		when (question.questionType) {
+			QuestionType.TextOptions ->
+				OptionsAnswer(
 					question = question,
+					answer = answer,
 					onAnswerChange = onAnswerChange
 				)
 			
-			AnswerType.Drawing -> answer.drawingAnswer?.let { }
-			AnswerType.Options -> OptionsAnswer(
-				question = question,
-				answer = answer,
-				onAnswerChange = onAnswerChange
-			)
+			QuestionType.TextDraw -> {}
+			QuestionType.MusicImage -> {
+				ImageAnswer(
+					question = question,
+					answer = answer,
+					onAnswerChange = onAnswerChange
+				)
+			}
 			
+			QuestionType.VideoMusic -> {
+				MusicAnswer(
+					player = player,
+					question = question,
+					answer = answer,
+					onAnswerChange = onAnswerChange
+				)
+			}
+			
+			QuestionType.ImageConnect -> {}
 		}
 	}
 }

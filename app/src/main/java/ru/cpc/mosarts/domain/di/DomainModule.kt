@@ -10,8 +10,10 @@ import ru.cpc.mosarts.domain.usecases.MoreInfUseCase
 import ru.cpc.mosarts.domain.usecases.MoreInfUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCase
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCaseImpl
-import ru.cpc.mosarts.domain.usecases.SimpleTestUseCase
-import ru.cpc.mosarts.domain.usecases.SimpleTestUseCaseImpl
+import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCase
+import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCaseImpl
+import ru.cpc.mosarts.domain.usecases.SendSimpleTestUseCase
+import ru.cpc.mosarts.domain.usecases.SendSimpleTestUseCaseImpl
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -26,5 +28,8 @@ interface DomainModule {
 	fun MoreInfUseCaseImpl.bindMoreInfUseCase(): MoreInfUseCase
 	
 	@Binds
-	fun SimpleTestUseCaseImpl.bindSimpleTestUseCase(): SimpleTestUseCase
+	fun GetSimpleTestUseCaseImpl.bindGetSimpleTestUseCase(): GetSimpleTestUseCase
+	
+	@Binds
+	fun SendSimpleTestUseCaseImpl.bindSendSimpleTestUseCase(): SendSimpleTestUseCase
 }
