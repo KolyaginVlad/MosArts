@@ -4,15 +4,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +47,7 @@ fun SchoolMapScreen(
         state = state,
         onSchoolTap = viewModel,
         onDismiss = viewModel::onDismiss,
-        onFilterChange = viewModel::onFilterChange
+        onFilterChange = viewModel::onFilterChange,
     )
 }
 
@@ -50,36 +58,56 @@ private fun Content(
     onDismiss: () -> Unit,
     onFilterChange: (String) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Map(
-            listOfSchool = state.listOfSchools,
-            modifier = Modifier.fillMaxSize(),
-            onSchoolTap = onSchoolTap
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        TextField(
+            modifier = Modifier
+                .height(70.dp)
+                .fillMaxWidth()
+                .padding(8.dp),
+            value = state.filter,
+            onValueChange = onFilterChange
         )
-        state.alertDialogInfo?.let {
-            AlertDialog(
-                onDismissRequest = onDismiss,
-                buttons = {
-                    Button(modifier = Modifier.fillMaxWidth().padding(8.dp), onClick = onDismiss) {
-                        Text(text = stringResource(R.string.ok))
-                    }
-                },
-                title = {
-                    Text(text = it.name, style = MaterialTheme.typography.h6)
-                },
-                text = {
-                    Column {
-                        Text(text = it.description, style = MaterialTheme.typography.subtitle1)
-                        Text(text = it.email, style = MaterialTheme.typography.subtitle2)
-                        Text(text = it.phone, style = MaterialTheme.typography.subtitle2)
-                        Text(text = it.address, style = MaterialTheme.typography.subtitle2)
-                        Text(
-                            text = it.themes.joinToString { it.name }, style = MaterialTheme
-                                .typography.subtitle2
-                        )
-                    }
-                }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Map(
+                listOfSchool = state.listOfSchools,
+                modifier = Modifier.fillMaxSize(),
+                onSchoolTap = onSchoolTap
             )
+            state.alertDialogInfo?.let {
+                AlertDialog(
+                    onDismissRequest = onDismiss,
+                    buttons = {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp), onClick = onDismiss
+                        ) {
+                            Text(text = stringResource(R.string.ok))
+                        }
+                    },
+                    title = {
+                        Text(text = it.name, style = MaterialTheme.typography.h6)
+                    },
+                    text = {
+                        Column {
+                            Text(
+                                text = it.description,
+                                style = MaterialTheme.typography.subtitle1
+                            )
+                            Text(text = it.email, style = MaterialTheme.typography.subtitle2)
+                            Text(text = it.phone, style = MaterialTheme.typography.subtitle2)
+                            Text(text = it.address, style = MaterialTheme.typography.subtitle2)
+                            Text(
+                                text = it.themes.joinToString { it.name }, style = MaterialTheme
+                                    .typography.subtitle2
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }

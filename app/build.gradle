@@ -61,6 +61,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.0'
     ksp "io.github.raamcosta.compose-destinations:ksp:$destinations_version"
 
+    implementation 'com.google.accompanist:accompanist-permissions:0.31.2-alpha'
+
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
 
 //    implementation("com.google.gms:google-services:4.3.15")

@@ -3,18 +3,19 @@ package ru.cpc.mosarts.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.vk.api.sdk.VK
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
 import ru.cpc.mosarts.ui.auth.Synchronizer
+import ru.cpc.mosarts.ui.theme.Primary
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
             MosArtsTheme {
+                rememberSystemUiController().setStatusBarColor(Primary)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background

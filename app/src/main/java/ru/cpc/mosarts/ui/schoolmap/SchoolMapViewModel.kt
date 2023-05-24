@@ -97,13 +97,12 @@ class SchoolMapViewModel @Inject constructor(
         }
     }
 
-    fun onSchoolTap(schoolMapInfo: SchoolMapInfo) {
-
-    }
-
     fun onFilterChange(filter: String) {
+        updateState {
+            it.copy(filter = filter)
+        }
         val newList = listOfSchools.filter { school ->
-            school.themes.any { it.name.contains(filter) }
+            school.themes.any { it.name.contains(filter, true) }
         }.map { it.mapToUi() }.toImmutableList()
         updateState { state ->
             state.copy(
