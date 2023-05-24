@@ -9,4 +9,6 @@ sealed class SimpleTestScreenEvent : Event() {
 	class WrongAnswer(val explain: String?) : SimpleTestScreenEvent()
 	
 	class RightAnswer(val explain: String?) : SimpleTestScreenEvent()
+	
+	class StartPlaying(val source: String?) : SimpleTestScreenEvent()
 }

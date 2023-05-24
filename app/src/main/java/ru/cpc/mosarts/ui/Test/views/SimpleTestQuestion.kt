@@ -1,6 +1,5 @@
 package ru.cpc.mosarts.ui.test.views
 
-import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,14 +12,16 @@ import androidx.compose.ui.unit.dp
 import ru.cpc.mosarts.domain.models.Question
 import ru.cpc.mosarts.domain.models.QuestionType
 import ru.cpc.mosarts.domain.models.UserAnswer
+import ru.cpc.mosarts.ui.test.views.players.CustomMediaPlayer
 import ru.cpc.mosarts.ui.views.Spacer
 
 @Composable
 fun SimpleTestQuestion(
 	question: Question,
 	answer: UserAnswer,
-	player: MediaPlayer,
+	player: CustomMediaPlayer,
 	onAnswerChange: (UserAnswer) -> Unit,
+	startPlayer: (String) -> Unit,
 	modifier: Modifier = Modifier
 ) {
 	Column(
@@ -31,14 +32,16 @@ fun SimpleTestQuestion(
 		QuestionField(
 			question = question,
 			modifier = Modifier.align(CenterHorizontally),
-			player = player
+			player = player,
+			startPlayer = startPlayer
 		)
 		AnswerField(
 			question = question,
 			answer = answer,
 			onAnswerChange = onAnswerChange,
 			modifier = Modifier.align(CenterHorizontally),
-			player = player
+			player = player,
+			startPlayer = startPlayer
 		)
 	}
 }
@@ -47,8 +50,9 @@ fun SimpleTestQuestion(
 @Composable
 fun QuestionField(
 	question: Question,
-	modifier: Modifier = Modifier,
-	player: MediaPlayer
+	player: CustomMediaPlayer,
+	startPlayer: (String) -> Unit,
+	modifier: Modifier = Modifier
 ) {
 	
 	Box(modifier = modifier) {
@@ -84,7 +88,13 @@ fun QuestionField(
 				Column {
 					question.question.textQuestion?.let { TextQuestion(question = it) }
 					Spacer(size = 20.dp)
-					question.question.source?.let { MusicQuestion(player = player, question = it) }
+					question.question.source?.let {
+						MusicQuestion(
+							player = player,
+							question = it,
+							startPlayer = startPlayer
+						)
+					}
 				}
 			}
 			
@@ -98,8 +108,9 @@ fun AnswerField(
 	question: Question,
 	answer: UserAnswer,
 	onAnswerChange: (UserAnswer) -> Unit,
+	startPlayer: (String) -> Unit,
+	player: CustomMediaPlayer,
 	modifier: Modifier = Modifier,
-	player: MediaPlayer
 ) {
 	Box(modifier = modifier) {
 		when (question.questionType) {
@@ -130,7 +141,8 @@ fun AnswerField(
 					player = player,
 					question = question,
 					answer = answer,
-					onAnswerChange = onAnswerChange
+					onAnswerChange = onAnswerChange,
+					startPlayer = startPlayer
 				)
 			}
 			

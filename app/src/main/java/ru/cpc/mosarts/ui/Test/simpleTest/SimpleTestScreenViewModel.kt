@@ -67,7 +67,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 				sendEvent(SimpleTestScreenEvent.Error(it.message ?: "Something went wrong"))
 			}, onSuccess = { questions ->
 				val answers = arrayListOf<UserAnswer>()
-				questions.forEach {
+				questions.forEach { _ ->
 					answers.add(
 						UserAnswer()
 					)
@@ -84,7 +84,6 @@ class SimpleTestScreenViewModel @Inject constructor(
 	}
 	
 	fun sendTest() {
-		logger.debug(currentState.results.points.toString())
 		updateState {
 			it.copy(isLoading = true)
 		}
@@ -95,6 +94,9 @@ class SimpleTestScreenViewModel @Inject constructor(
 					sendEvent(
 						SimpleTestScreenEvent.Error("Error")
 					)
+					updateState {
+						it.copy(isLoading = false)
+					}
 				}, onSuccess = {
 					// TODO:
 					updateState {
@@ -107,9 +109,6 @@ class SimpleTestScreenViewModel @Inject constructor(
 	
 	fun nextQuestion() {
 		updateState {
-			it.copy(isLoading = true)
-		}
-		updateState {
 			it.copy(
 				currentQuestion =
 				if (it.questions.size - 1 > it.currentQuestion ?: 0)
@@ -119,11 +118,14 @@ class SimpleTestScreenViewModel @Inject constructor(
 			)
 		}
 	}
+	fun startPlayer(source:String){
+		launchViewModelScope {
+			sendEvent(SimpleTestScreenEvent.StartPlaying(source))
+		}
+		logger.debug(currentState.audioPlayer.getDataSource()?:"Sourse")
+	}
 	
 	fun previousQuestion() {
-		updateState {
-			it.copy(isLoading = true)
-		}
 		updateState {
 			it.copy(
 				currentQuestion =

@@ -56,7 +56,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						),
 						AnswerVariant(
 							"piano",
-							"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+							"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
 						)
 					),
 					questionId = 3,

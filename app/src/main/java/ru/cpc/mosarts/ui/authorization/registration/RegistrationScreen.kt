@@ -25,7 +25,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
-import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
+import ru.cpc.mosarts.ui.destinations.SimpleTestScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
 
@@ -47,7 +47,7 @@ fun RegistrationScreen(
 				).show()
 				
 				is RegistrationScreenEvent.GoToMoreInf -> navigator.navigate(
-					MoreInfScreenDestination
+					SimpleTestScreenDestination
 				)
 			}
 		}

@@ -1,5 +1,6 @@
 package ru.cpc.mosarts.ui.test.simpleTest
 
+import android.media.AudioAttributes
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -60,6 +61,22 @@ fun SimpleTestScreen(
 						).show()
 					}
 				}
+				
+				is SimpleTestScreenEvent.StartPlaying -> {
+					var player = state.audioPlayer
+					if (player.getDataSource() != it.source) {
+						player.reset()
+						player.setAudioAttributes(
+							AudioAttributes.Builder()
+								.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+								.build()
+						)
+						player.setDataSource(it.source)
+						player.setOnPreparedListener { player.start() }
+						player.prepareAsync()
+					} else player.start()
+					
+				}
 			}
 		}
 	}
@@ -69,6 +86,7 @@ fun SimpleTestScreen(
 		sendTest = viewModel::sendTest,
 		nextQuestion = viewModel::nextQuestion,
 		previousQuestion = viewModel::previousQuestion,
+		startPlayer = viewModel::startPlayer
 	)
 }
 
@@ -79,6 +97,7 @@ fun SimpleTestScreenContent(
 	sendTest: () -> Unit,
 	nextQuestion: () -> Unit,
 	previousQuestion: () -> Unit,
+	startPlayer: (String) -> Unit,
 	modifier: Modifier = Modifier,
 ) {
 	Scaffold(
@@ -109,7 +128,8 @@ fun SimpleTestScreenContent(
 									answer = state.answers[it],
 									onAnswerChange = onAnswerChange,
 									modifier = Modifier.fillMaxWidth(),
-									player = state.audioPlayer
+									player = state.audioPlayer,
+									startPlayer = startPlayer
 								)
 							}
 						}

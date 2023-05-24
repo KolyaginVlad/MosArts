@@ -1,8 +1,5 @@
 package ru.cpc.mosarts.ui.test.views
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,17 +11,18 @@ import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import ru.cpc.mosarts.domain.models.AnswerVariant
 import ru.cpc.mosarts.domain.models.Question
 import ru.cpc.mosarts.domain.models.UserAnswer
+import ru.cpc.mosarts.ui.test.views.players.CustomMediaPlayer
 import ru.cpc.mosarts.ui.test.views.players.Player
 import ru.cpc.mosarts.ui.views.Spacer
 
@@ -69,8 +67,10 @@ fun OptionsAnswer(
 			) {
 				RadioButton(
 					selected = answer.textAnswer == it.textVariant,
-					onClick = {
-						onAnswerChange(UserAnswer(it.textVariant))
+					onClick = remember(it.textVariant, onAnswerChange) {
+						{
+							onAnswerChange(UserAnswer(it.textVariant))
+						}
 					}
 				)
 				Text(text = it.textVariant)
@@ -104,8 +104,10 @@ fun ImageAnswer(
 			) {
 				RadioButton(
 					selected = answer.textAnswer == it.textVariant,
-					onClick = {
-						onAnswerChange(UserAnswer(it.textVariant))
+					onClick = remember(it.textVariant, onAnswerChange) {
+						{
+							onAnswerChange(UserAnswer(it.textVariant))
+						}
 					},
 					modifier = Modifier.align(CenterVertically)
 				
@@ -123,7 +125,6 @@ fun ImageAnswer(
 				}
 			}
 			Spacer(40.dp)
-			
 		}
 	}
 }
@@ -133,24 +134,13 @@ fun MusicAnswer(
 	question: Question,
 	answer: UserAnswer,
 	onAnswerChange: (UserAnswer) -> Unit,
-	modifier: Modifier = Modifier,
-	player: MediaPlayer
+	player: CustomMediaPlayer,
+	startPlayer: (String) -> Unit,
+	modifier: Modifier = Modifier
 ) {
 	Column(modifier = modifier)
 	{
 		question.answerVariants?.forEach {
-			val mediaPlayer = player
-			val context = LocalContext.current
-			val url = it.source
-			mediaPlayer.reset()
-			mediaPlayer.setAudioAttributes(
-				AudioAttributes.Builder()
-					.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-					.build()
-			)
-			
-			mediaPlayer.setDataSource(context, Uri.parse(url))
-			mediaPlayer.prepareAsync()
 			Row(
 				modifier = modifier
 					.border(
@@ -164,10 +154,14 @@ fun MusicAnswer(
 						onAnswerChange(UserAnswer(it.textVariant))
 					}
 				)
-				Player(
-					mediaPlayer,
-					modifier = modifier.width(200.dp)
-				)
+				it.source?.let { it1 ->
+					Player(
+						player,
+						modifier = modifier.width(200.dp),
+						url = it1,
+						startPlayer = startPlayer
+					)
+				}
 			}
 		}
 	}
