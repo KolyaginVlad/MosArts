@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.moreinf
+package ru.cpc.mosarts.ui.authorization.moreinf
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.registration
+package ru.cpc.mosarts.ui.authorization.registration
 
 import android.widget.Toast
 import androidx.compose.foundation.Image

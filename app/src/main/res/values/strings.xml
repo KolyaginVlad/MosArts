@@ -15,4 +15,18 @@
     <string name="auth_by_vk">Auth by VK</string>
     <string name="select_themes">Select the areas of interest</string>
     <string name="done">Done</string>
+    <string name="finish_test"> finish test</string>
+    <string name="next_question"> next question </string>
+    <string name="previous_question"> previous question </string>
+    <string name="test_is_finished"> Test is finished </string>
+    <string name="test_points"> You earned  </string>
+    <string name="test"> Test  </string>
+
+
+    <plurals name="points">
+        <item quantity="one"> point</item>
+        <item quantity="few"> points</item>
+        <item quantity="many"> points</item>
+        <item quantity="other"> points</item>
+    </plurals>
 </resources>
