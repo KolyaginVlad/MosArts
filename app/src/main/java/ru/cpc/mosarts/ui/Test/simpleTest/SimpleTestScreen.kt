@@ -72,7 +72,6 @@ fun SimpleTestScreen(
 								.build()
 						)
 						player.setDataSource(it.source)
-						player.setOnPreparedListener { player.start() }
 						player.prepareAsync()
 					} else player.start()
 					

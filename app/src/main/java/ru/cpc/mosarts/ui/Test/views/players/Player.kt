@@ -8,6 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Slider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -29,6 +30,15 @@ fun Player(
 	}
 	val position = remember {
 		mutableStateOf(0F)
+	}
+	val duration = remember {
+		mutableStateOf(0F)
+	}
+	LaunchedEffect(player, playing.value) {
+		player.setOnPreparedListener {
+			duration.value = player.duration.toFloat()
+			player.start()
+		}
 	}
 	Row(
 		modifier = modifier
@@ -67,7 +77,7 @@ fun Player(
 		)
 		Slider(
 			value = position.value,
-			valueRange = 0F..player.duration.toFloat(),
+			valueRange = 0F..duration.value,
 			onValueChange = {
 				if (player.getDataSource() == url) {
 					position.value = it
