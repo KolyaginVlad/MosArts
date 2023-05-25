@@ -19,14 +19,15 @@ fun Results(
 	Column() {
 		Text(
 			text = stringResource(id = R.string.test_is_finished),
-			style = MaterialTheme.typography.h2
+			style = MaterialTheme.typography.h3
 		)
 		Spacer(size = 25.dp)
 		Text(
 			text = stringResource(id = R.string.test_points) + " " + points.toString() + " " + pluralStringResource(
 				R.plurals.points,
 				points
-			)
+			),
+			style = MaterialTheme.typography.h4
 		)
 	}
 }

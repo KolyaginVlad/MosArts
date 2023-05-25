@@ -7,13 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -59,9 +60,11 @@ fun OptionsAnswer(
 		question.answerVariants?.forEach {
 			Row(
 				modifier = Modifier
+					.padding(10.dp)
 					.border(
 						width = 5.dp,
-						color = borderColor(answer = answer, question = question, it = it)
+						color = borderColor(answer = answer, question = question, it = it),
+						shape = RoundedCornerShape(20)
 					)
 					.width(200.dp)
 			) {
@@ -71,9 +74,14 @@ fun OptionsAnswer(
 						{
 							onAnswerChange(UserAnswer(it.textVariant))
 						}
-					}
+					},
+					modifier = Modifier.align(CenterVertically)
 				)
-				Text(text = it.textVariant)
+				Text(
+					text = it.textVariant,
+					modifier = Modifier.align(CenterVertically),
+					style = MaterialTheme.typography.body2
+				)
 			}
 		}
 	}
@@ -97,9 +105,12 @@ fun ImageAnswer(
 		question.answerVariants?.forEachIndexed { index, it ->
 			Row(
 				modifier = modifier
+					.padding(10.dp)
 					.border(
 						width = 5.dp,
-						color = borderColor(answer = answer, question = question, it = it)
+						color = borderColor(answer = answer, question = question, it = it),
+						shape = RoundedCornerShape(20)
+					
 					)
 			) {
 				RadioButton(
@@ -112,7 +123,7 @@ fun ImageAnswer(
 					modifier = Modifier.align(CenterVertically)
 				
 				)
-				Column(modifier = Modifier.align(Top)) {
+				Column(modifier = Modifier.padding(10.dp)) {
 					GlideImage(
 						model = it.source,
 						contentDescription = null,
@@ -121,7 +132,7 @@ fun ImageAnswer(
 							.height(500.dp)
 							.padding(0.dp),
 					)
-					Text(text = it.textVariant)
+					Text(text = it.textVariant, style = MaterialTheme.typography.body2)
 				}
 			}
 			Spacer(40.dp)
@@ -143,9 +154,11 @@ fun MusicAnswer(
 		question.answerVariants?.forEach {
 			Row(
 				modifier = modifier
+					.padding(10.dp)
 					.border(
 						width = 5.dp,
-						color = borderColor(answer = answer, question = question, it = it)
+						color = borderColor(answer = answer, question = question, it = it),
+						shape = RoundedCornerShape(20)
 					)
 			) {
 				RadioButton(

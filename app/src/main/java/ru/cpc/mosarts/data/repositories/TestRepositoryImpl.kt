@@ -18,12 +18,12 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 			persistentListOf(
 				Question(
 					questionType = QuestionType.TextOptions,
-					answerVariants = arrayListOf(AnswerVariant("18"), AnswerVariant("10")),
-					question = QuestionVal(textQuestion = "How old are you?"),
+					answerVariants = arrayListOf(AnswerVariant("дирижёр"), AnswerVariant("композитор"),AnswerVariant("концертмейстер")),
+					question = QuestionVal(textQuestion = "Кто сочиняет музыку?"),
 					questionId = 1,
 					cost = 1,
-					rightAnswer = UserAnswer("18"),
-					explain = "you are 18"
+					rightAnswer = UserAnswer("композитор"),
+					explain = "композитор. Композитор – автор, создатель музыкальных произведений."
 				),
 				Question(
 					questionType = QuestionType.MusicImage,

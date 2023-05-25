@@ -108,21 +108,21 @@ class SimpleTestScreenViewModel @Inject constructor(
 	}
 	
 	fun nextQuestion() {
-		updateState {
-			it.copy(
-				currentQuestion =
-				if (it.questions.size - 1 > it.currentQuestion ?: 0)
+		if (currentState.questions.size - 1 > currentState.currentQuestion ?: 0) {
+			updateState {
+				it.copy(
+					currentQuestion =
 					it.currentQuestion?.plus(1)
-				else it.currentQuestion
-			
-			)
-		}
+				)
+			}
+		} else sendTest()
 	}
-	fun startPlayer(source:String){
+	
+	fun startPlayer(source: String) {
 		launchViewModelScope {
 			sendEvent(SimpleTestScreenEvent.StartPlaying(source))
 		}
-		logger.debug(currentState.audioPlayer.getDataSource()?:"Sourse")
+		logger.debug(currentState.audioPlayer.getDataSource() ?: "Sourse")
 	}
 	
 	fun previousQuestion() {

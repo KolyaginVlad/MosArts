@@ -72,7 +72,6 @@ fun SimpleTestScreen(
 								.build()
 						)
 						player.setDataSource(it.source)
-						player.setOnPreparedListener { player.start() }
 						player.prepareAsync()
 					} else player.start()
 					
@@ -102,7 +101,7 @@ fun SimpleTestScreenContent(
 ) {
 	Scaffold(
 		topBar = {
-			TopAppBar(title = { Text(stringResource(id = R.string.app_name)) })
+			TopAppBar(title = { Text(stringResource(id = R.string.test)) })
 		}
 	) {
 		Column(
