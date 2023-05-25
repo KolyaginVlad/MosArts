@@ -30,6 +30,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.vk.api.sdk.auth.VKScope
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.auth.Synchronizer
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import ru.cpc.mosarts.ui.views.FormTextField
