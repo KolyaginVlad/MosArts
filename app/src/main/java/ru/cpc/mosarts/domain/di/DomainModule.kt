@@ -16,6 +16,10 @@ import ru.cpc.mosarts.domain.usecases.MoreInfUseCase
 import ru.cpc.mosarts.domain.usecases.MoreInfUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCase
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCaseImpl
+import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCase
+import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCaseImpl
+import ru.cpc.mosarts.domain.usecases.SendSimpleTestUseCase
+import ru.cpc.mosarts.domain.usecases.SendSimpleTestUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.SaveTokenUseCase
 import ru.cpc.mosarts.domain.usecases.SaveTokenUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.SendSelectedThemesUseCase
@@ -48,4 +52,10 @@ interface DomainModule {
 
 	@Binds
 	fun GetListOfSchoolsUseCaseImpl.bindGetListOfSchoolsUseCase(): GetListOfSchoolsUseCase
+
+	@Binds
+	fun GetSimpleTestUseCaseImpl.bindGetSimpleTestUseCase(): GetSimpleTestUseCase
+
+	@Binds
+	fun SendSimpleTestUseCaseImpl.bindSendSimpleTestUseCase(): SendSimpleTestUseCase
 }

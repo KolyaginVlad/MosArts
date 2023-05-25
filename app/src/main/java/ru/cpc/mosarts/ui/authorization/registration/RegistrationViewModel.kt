@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.registration
+package ru.cpc.mosarts.ui.authorization.registration
 
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import dagger.hilt.android.lifecycle.HiltViewModel

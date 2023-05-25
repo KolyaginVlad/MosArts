@@ -1,4 +1,4 @@
-package ru.cpc.mosarts.ui.registration
+package ru.cpc.mosarts.ui.authorization.registration
 
 import ru.cpc.mosarts.utils.base.State
 
