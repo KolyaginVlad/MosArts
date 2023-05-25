@@ -1,8 +1,9 @@
-package ru.cpc.mosarts.ui.authorization.moreinf
+package ru.cpc.mosarts.ui.moreinf
 
 import androidx.core.text.isDigitsOnly
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.cpc.mosarts.domain.models.MoreInf
+import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.domain.usecases.MoreInfUseCase
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class MoreInfViewModel @Inject constructor(
 	private val moreInfUseCase: MoreInfUseCase,
 ) : BaseViewModel<MoreInfScreenState, MoreInfScreenEvent>(MoreInfScreenState()) {
 	
-	fun OnAgeChange(age: String) {
+	fun onAgeChange(age: String) {
 		if (age.isDigitsOnly()) {
 			updateState {
 				it.copy(age = age)
@@ -23,27 +24,27 @@ class MoreInfViewModel @Inject constructor(
 	}
 	
 	
-	fun OnPhoneNumberChange(number: String) {
+	fun onPhoneNumberChange(number: String) {
 		updateState {
 			it.copy(phoneNumber = number)
 		}
 	}
 	
-	fun OnNameChange(name: String) {
+	fun onNameChange(name: String) {
 		updateState {
 			it.copy(name = name)
 		}
 	}
 	
-	fun OnFatherNameChange(name: String) {
+	fun onFatherNameChange(name: String) {
 		updateState {
 			it.copy(fatherName = name)
 		}
 	}
 	
-	fun OnSurnameChange(name: String) {
+	fun onSurnameChange(name: String) {
 		updateState {
-			it.copy(surName = name)
+			it.copy(surname = name)
 		}
 	}
 	
@@ -53,23 +54,33 @@ class MoreInfViewModel @Inject constructor(
 		}
 		moreInfUseCase(
 			MoreInf(
-				age = currentState.age.toInt(),
+				age = currentState.age.toIntOrNull(),
 				phonenumber = currentState.phoneNumber,
 				avatar = currentState.avatar,
 				name = currentState.name,
 				fatherName = currentState.fatherName,
-				surname = currentState.surName
+				surname = currentState.surname
 			)
 		).fold(
 			onFailure = {
 				sendEvent(MoreInfScreenEvent.ShowToast(it.message ?: "Something went wrong"))
 			}, onSuccess = {
-				// TODO:
-				
+				sendEvent(MoreInfScreenEvent.GoToTest)
 			}
 		)
 		updateState {
 			MoreInfScreenState() //Сбрасываю на начальное состояние
+		}
+	}
+
+	fun setProfileInfo(profileInfo: ProfileInfo?) {
+		if (profileInfo != null) {
+			updateState {
+				it.copy(name = profileInfo.name, surname = profileInfo.surname)
+			}
+			//Это ВК регистрация
+		} else {
+			//Это регистрация через почту
 		}
 	}
 }

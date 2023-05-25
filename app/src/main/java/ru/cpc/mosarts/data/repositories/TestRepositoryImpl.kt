@@ -77,4 +77,33 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 		delay(1000)
 		return Result.success(Unit)
 	}
+	
+	override suspend fun getThemes(): Result<List<ThemeData>> {
+		delay(300)
+		return Result.success(
+			listOf(
+				ThemeData(
+					0,
+					"Музыка"
+				),
+				ThemeData(
+					1,
+					"Хореография"
+				),
+				ThemeData(
+					2,
+					"Изобразительное искусство"
+				),
+				ThemeData(
+					3,
+					"Театр"
+				),
+			)
+		)
+	}
+	
+	override suspend fun sendSelectedThemes(themes: List<ThemeData>): Result<Unit> {
+		delay(100)
+		return Result.success(Unit)
+	}
 }
