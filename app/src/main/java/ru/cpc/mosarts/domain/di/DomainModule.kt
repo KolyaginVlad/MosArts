@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import ru.cpc.mosarts.domain.usecases.GetListOfSchoolsUseCase
+import ru.cpc.mosarts.domain.usecases.GetListOfSchoolsUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.GetThemesUseCase
 import ru.cpc.mosarts.domain.usecases.GetThemesUseCaseImpl
 import ru.cpc.mosarts.domain.usecases.GetVkProfileInfoUseCase
@@ -43,4 +45,7 @@ interface DomainModule {
 
 	@Binds
 	fun SendSelectedThemesUseCaseImpl.bindSendSelectedThemesUseCase(): SendSelectedThemesUseCase
+
+	@Binds
+	fun GetListOfSchoolsUseCaseImpl.bindGetListOfSchoolsUseCase(): GetListOfSchoolsUseCase
 }
