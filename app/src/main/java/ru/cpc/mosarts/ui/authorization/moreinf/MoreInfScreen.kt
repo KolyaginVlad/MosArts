@@ -28,6 +28,7 @@ import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.ui.destinations.ThemesScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
 
 @Destination
 @Composable
@@ -46,7 +47,7 @@ fun MoreInfScreen(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
 
-				MoreInfScreenEvent.GoToTest -> navigator.navigate(ThemesScreenDestination)
+				MoreInfScreenEvent.GoToTest -> navigator.navigateWithClearBackStack(ThemesScreenDestination)
 			}
 		}
 	}

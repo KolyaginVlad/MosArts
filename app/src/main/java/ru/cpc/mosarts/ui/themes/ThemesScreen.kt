@@ -25,6 +25,7 @@ import ru.cpc.mosarts.ui.destinations.SchoolMapScreenDestination
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 import ru.cpc.mosarts.ui.themes.views.ThemesCheckBoxGroup
 import ru.cpc.mosarts.ui.views.Loading
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
 
 @Composable
 @Destination
@@ -41,7 +42,7 @@ fun ThemesScreen(
                     Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                 }
 
-                ThemesScreenEvent.GoToMap -> navigator.navigate(
+                ThemesScreenEvent.GoToMap -> navigator.navigateWithClearBackStack(
                     SchoolMapScreenDestination
                 )
             }

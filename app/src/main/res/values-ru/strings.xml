@@ -27,4 +27,7 @@
         <item quantity="other"> очков</item>
     </plurals>
     <string name="ok">OK</string>
+    <string name="i_have_account">Я уже зарегистрирован</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="cant_login_by_vk">You cannot log in via VK because you do not have an email address</string>
 </resources>

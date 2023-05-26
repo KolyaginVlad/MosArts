@@ -7,6 +7,8 @@ sealed class AuthScreenEvent : Event() {
 	class ShowToast(val text: String) : AuthScreenEvent()
 
     object LoginVk: AuthScreenEvent()
+    object GoToRegister : AuthScreenEvent()
+    object CantLoginByVk : AuthScreenEvent()
 
     class GoToMoreInf(val profileInfo: ProfileInfo? = null): AuthScreenEvent()
 

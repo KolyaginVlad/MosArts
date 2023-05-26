@@ -13,6 +13,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,9 +32,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.vk.api.sdk.auth.VKScope
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.auth.Synchronizer
+import ru.cpc.mosarts.ui.destinations.AuthScreenDestination
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
+import androidx.compose.foundation.layout.Spacer as ModifiableSpacer
 
 
 @RootNavGraph(start = true)
@@ -51,14 +55,22 @@ fun RegistrationScreen(
 				is RegistrationScreenEvent.ShowToast -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
-				
-				is RegistrationScreenEvent.GoToMoreInf -> navigator.navigate(
+
+				is RegistrationScreenEvent.GoToMoreInf -> navigator.navigateWithClearBackStack(
 					MoreInfScreenDestination(it.profileInfo)
 				)
 
 				RegistrationScreenEvent.LoginVk -> {
 					Synchronizer.login(listOf(VKScope.EMAIL, VKScope.FRIENDS))
 				}
+
+				RegistrationScreenEvent.GoToAuth -> navigator.navigateWithClearBackStack(
+					AuthScreenDestination
+				)
+
+				RegistrationScreenEvent.CantLoginByVk -> Toast.makeText(
+					context, context.getString(R.string.cant_login_by_vk), Toast.LENGTH_LONG
+				).show()
 			}
 		}
 	}
@@ -73,7 +85,8 @@ fun RegistrationScreen(
 		onPasswordChange = viewModel::onPasswordChange,
 		onAuth = viewModel::onAuth,
 		onSecondPasswordChange = viewModel::onSecondPasswordChange,
-		onVkAuth = viewModel::onVkAuth
+		onVkAuth = viewModel::onVkAuth,
+		onGoToAuth = viewModel::onGoToAuth
 	)
 }
 
@@ -85,6 +98,7 @@ fun RegistrationScreenContent(
 	onSecondPasswordChange: (String) -> Unit,
 	onAuth: () -> Unit,
 	onVkAuth: () -> Unit,
+	onGoToAuth: () -> Unit,
 ) {
 	Scaffold(
 		topBar = {
@@ -98,6 +112,7 @@ fun RegistrationScreenContent(
 			verticalArrangement = Arrangement.Center,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
+			ModifiableSpacer(modifier = Modifier.weight(1f))
 			Text(text = stringResource(id = R.string.registration))
 			Spacer(32.dp)
 			FormTextField(
@@ -139,6 +154,10 @@ fun RegistrationScreenContent(
 				painter = painterResource(R.drawable.vk),
 				contentDescription = stringResource(R.string.auth_by_vk)
 			)
+			ModifiableSpacer(modifier = Modifier.weight(1f))
+			TextButton(onClick = onGoToAuth) {
+				Text(text = stringResource(id = R.string.i_have_account))
+			}
 		}
 	}
 }
