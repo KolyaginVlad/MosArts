@@ -32,6 +32,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.vk.api.sdk.auth.VKScope
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.auth.Synchronizer
+import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.destinations.RegistrationScreenDestination
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
@@ -70,6 +71,10 @@ fun AuthScreen(
                 AuthScreenEvent.CantLoginByVk -> Toast.makeText(
                     context, context.getString(R.string.cant_login_by_vk), Toast.LENGTH_LONG
                 ).show()
+
+                AuthScreenEvent.GoToActivities -> navigator.navigateWithClearBackStack(
+                    ActivitiesScreenDestination
+                )
             }
         }
     }

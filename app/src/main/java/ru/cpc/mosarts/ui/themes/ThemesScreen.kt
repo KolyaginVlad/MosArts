@@ -21,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
 import ru.cpc.mosarts.ui.destinations.SchoolMapScreenDestination
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 import ru.cpc.mosarts.ui.themes.views.ThemesCheckBoxGroup
@@ -43,7 +44,7 @@ fun ThemesScreen(
                 }
 
                 ThemesScreenEvent.GoToMap -> navigator.navigateWithClearBackStack(
-                    SchoolMapScreenDestination
+                    ActivitiesScreenDestination
                 )
             }
         }

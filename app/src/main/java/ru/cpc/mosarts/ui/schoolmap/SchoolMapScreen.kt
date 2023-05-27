@@ -28,8 +28,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.yandex.mapkit.map.MapObjectTapListener
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
 import ru.cpc.mosarts.ui.views.Map
 
+@MainNavGraph(start = true)
 @Destination
 @Composable
 fun SchoolMapScreen(

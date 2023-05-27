@@ -36,8 +36,7 @@ class AuthViewModel @Inject constructor(
             onFailure = {
                 sendEvent(AuthScreenEvent.ShowToast(it.message ?: "Something went wrong"))
             }, onSuccess = {
-//                sendEvent(AuthScreenEvent.GoToList)
-                // TODO:
+                sendEvent(AuthScreenEvent.GoToActivities)
             }
         )
         updateState {

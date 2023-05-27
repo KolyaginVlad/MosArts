@@ -9,6 +9,7 @@ sealed class AuthScreenEvent : Event() {
     object LoginVk: AuthScreenEvent()
     object GoToRegister : AuthScreenEvent()
     object CantLoginByVk : AuthScreenEvent()
+    object GoToActivities : AuthScreenEvent()
 
     class GoToMoreInf(val profileInfo: ProfileInfo? = null): AuthScreenEvent()
 

@@ -33,4 +33,5 @@
     <string name="i_have_account">I\'m already registered</string>
     <string name="register">Register</string>
     <string name="cant_login_by_vk">Вы не можете авторизоваться через вк так как у вас не указана почта</string>
+    <string name="school_map">Schools map</string>
 </resources>
