@@ -19,11 +19,16 @@
     <string name="previous_question"> предыдущий вопрос </string>
     <string name="test_is_finished"> Тест завершён </string>
     <string name="test_points"> Вы заработали  </string>
-    <string name="test"> Тест  </string>
+    <string name="test">Тест</string>
     <plurals name="points">
         <item quantity="one"> очко</item>
         <item quantity="few"> очка</item>
         <item quantity="many"> очков</item>
         <item quantity="other"> очков</item>
     </plurals>
+    <string name="ok">OK</string>
+    <string name="i_have_account">Я уже зарегистрирован</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="cant_login_by_vk">You cannot log in via VK because you do not have an email address</string>
+    <string name="school_map">Карта школ</string>
 </resources>

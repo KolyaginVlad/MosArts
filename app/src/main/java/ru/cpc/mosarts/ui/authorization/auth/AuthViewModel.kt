@@ -36,8 +36,7 @@ class AuthViewModel @Inject constructor(
             onFailure = {
                 sendEvent(AuthScreenEvent.ShowToast(it.message ?: "Something went wrong"))
             }, onSuccess = {
-                //sendEvent(AuthScreenEvent.GoToList)
-                // TODO:
+                sendEvent(AuthScreenEvent.GoToActivities)
             }
         )
         updateState {
@@ -51,10 +50,21 @@ class AuthViewModel @Inject constructor(
                 saveTokenUseCase(vkAuthenticationResult.token.accessToken)
                 getVkProfileInfoUseCase().fold(
                     onSuccess = {
-                        sendEvent(
-                            AuthScreenEvent.GoToMoreInf(
-                                it
+                        loginUseCase(
+                            UserCredentials(
+                                vkAuthenticationResult.token.email ?: kotlin.run {
+                                    sendEvent(AuthScreenEvent.CantLoginByVk)
+                                    return@launchViewModelScope
+                                },
+                                vkAuthenticationResult.token.userId.value.toString()
                             )
+                        ).fold(
+                            onFailure = {
+                                sendEvent(AuthScreenEvent.ShowToast(it.message ?: "Something went wrong"))
+                            }, onSuccess = {
+//                              sendEvent(AuthScreenEvent.GoToList)
+                                // TODO:
+                            }
                         )
                     },
                     onFailure = ::handleException
@@ -65,5 +75,9 @@ class AuthViewModel @Inject constructor(
 
     fun onVkAuth() {
         trySendEvent(AuthScreenEvent.LoginVk)
+    }
+
+    fun onGoToRegister() {
+        trySendEvent(AuthScreenEvent.GoToRegister)
     }
 }

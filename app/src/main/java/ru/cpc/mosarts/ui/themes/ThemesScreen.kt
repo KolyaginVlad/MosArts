@@ -19,14 +19,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
+import ru.cpc.mosarts.ui.destinations.SchoolMapScreenDestination
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 import ru.cpc.mosarts.ui.themes.views.ThemesCheckBoxGroup
 import ru.cpc.mosarts.ui.views.Loading
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
 
 @Composable
 @Destination
 fun ThemesScreen(
+    navigator: DestinationsNavigator,
     viewModel: ThemesViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -37,6 +42,10 @@ fun ThemesScreen(
                 ThemesScreenEvent.Error -> {
                     Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                 }
+
+                ThemesScreenEvent.GoToMap -> navigator.navigateWithClearBackStack(
+                    ActivitiesScreenDestination
+                )
             }
         }
     }

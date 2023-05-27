@@ -6,6 +6,7 @@ import ru.cpc.mosarts.domain.models.UserCredentials
 import ru.cpc.mosarts.domain.usecases.GetVkProfileInfoUseCase
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCase
 import ru.cpc.mosarts.domain.usecases.SaveTokenUseCase
+import ru.cpc.mosarts.ui.authorization.auth.AuthScreenEvent
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
@@ -48,7 +49,6 @@ class RegistrationViewModel @Inject constructor(
                             )
                         )
                     }, onSuccess = {
-                        // TODO:
                         sendEvent(RegistrationScreenEvent.GoToMoreInf())
                     }
                 )
@@ -68,11 +68,29 @@ class RegistrationViewModel @Inject constructor(
             launchViewModelScope {
                 saveTokenUseCase(vkAuthenticationResult.token.accessToken)
                 getVkProfileInfoUseCase().fold(
-                    onSuccess = {
-                        sendEvent(
-                            RegistrationScreenEvent.GoToMoreInf(
-                                it
+                    onSuccess = { profile ->
+                        registrationUseCase(
+                            UserCredentials(
+                                vkAuthenticationResult.token.email ?: kotlin.run {
+                                    sendEvent(RegistrationScreenEvent.CantLoginByVk)
+                                    return@launchViewModelScope
+                                },
+                                vkAuthenticationResult.token.userId.value.toString()
                             )
+                        ).fold(
+                            onFailure = {
+                                sendEvent(
+                                    RegistrationScreenEvent.ShowToast(
+                                        it.message ?: "Something went wrong"
+                                    )
+                                )
+                            }, onSuccess = {
+                                sendEvent(
+                                    RegistrationScreenEvent.GoToMoreInf(
+                                        profile
+                                    )
+                                )
+                            }
                         )
                     },
                     onFailure = {
@@ -90,6 +108,10 @@ class RegistrationViewModel @Inject constructor(
 
     fun onVkAuth() {
         trySendEvent(RegistrationScreenEvent.LoginVk)
+    }
+
+    fun onGoToAuth() {
+        trySendEvent(RegistrationScreenEvent.GoToAuth)
     }
 
     private fun RegistrationScreenState.checkPasswords() = secondPassword == password

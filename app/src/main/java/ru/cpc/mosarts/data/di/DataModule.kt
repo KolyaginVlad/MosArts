@@ -9,10 +9,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.cpc.mosarts.data.repositories.SchoolRepositoryImpl
 import ru.cpc.mosarts.data.repositories.TestRepositoryImpl
 import ru.cpc.mosarts.data.repositories.VkRepositoryImpl
 import ru.cpc.mosarts.domain.repositories.VkRepository
 import ru.cpc.mosarts.data.repositories.UserRepositoryImpl
+import ru.cpc.mosarts.domain.repositories.SchoolRepository
 import ru.cpc.mosarts.domain.repositories.TestRepository
 import ru.cpc.mosarts.domain.repositories.UserRepository
 
@@ -29,6 +31,9 @@ interface DataModule {
 
     @Binds
     fun TestRepositoryImpl.bindTestRepository(): TestRepository
+
+    @Binds
+    fun SchoolRepositoryImpl.bindSchoolRepository(): SchoolRepository
 
 
     companion object {
