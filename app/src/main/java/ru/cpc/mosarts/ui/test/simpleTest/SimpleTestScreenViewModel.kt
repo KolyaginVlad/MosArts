@@ -3,6 +3,9 @@ package ru.cpc.mosarts.ui.test.simpleTest
 import androidx.compose.runtime.toMutableStateList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import ru.cpc.mosarts.domain.models.Difficulty
+import ru.cpc.mosarts.domain.models.NamesOfTest
+import ru.cpc.mosarts.domain.models.TestParams
 import ru.cpc.mosarts.domain.models.TestResults
 import ru.cpc.mosarts.domain.models.UserAnswer
 import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCase
@@ -17,9 +20,9 @@ class SimpleTestScreenViewModel @Inject constructor(
 	private val sendSimpleTestUseCase: SendSimpleTestUseCase,
 ) : BaseViewModel<SimpleTestScreenState, SimpleTestScreenEvent>(SimpleTestScreenState()) {
 	
-	init {
+	fun init(namesOfTest: NamesOfTest, difficulty: Difficulty) {
 		launchViewModelScope {
-			getTest()
+			getTest(namesOfTest, difficulty)
 		}
 	}
 	
@@ -45,6 +48,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 				} else sendEvent(
 					SimpleTestScreenEvent.WrongAnswer(curQuestion()?.explain)
 				)
+				currentState.openExplainDialog.value=true
 				delay(2500)
 				nextQuestion()
 			}
@@ -61,8 +65,8 @@ class SimpleTestScreenViewModel @Inject constructor(
 		} ?: false
 	
 	
-	private suspend fun getTest() {
-		getSimpleTestUseCase().fold(
+	private suspend fun getTest(namesOfTest: NamesOfTest, difficulty: Difficulty) {
+		getSimpleTestUseCase(TestParams(namesOfTest, difficulty)).fold(
 			onFailure = {
 				sendEvent(SimpleTestScreenEvent.Error(it.message ?: "Something went wrong"))
 			}, onSuccess = { questions ->
@@ -84,6 +88,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 	}
 	
 	fun sendTest() {
+		currentState.openExplainDialog.value=false
 		updateState {
 			it.copy(isLoading = true)
 		}
@@ -112,9 +117,10 @@ class SimpleTestScreenViewModel @Inject constructor(
 			updateState {
 				it.copy(
 					currentQuestion =
-					it.currentQuestion?.plus(1)
+					it.currentQuestion?.plus(1),
 				)
 			}
+			currentState.openExplainDialog.value=false
 		} else sendTest()
 	}
 	

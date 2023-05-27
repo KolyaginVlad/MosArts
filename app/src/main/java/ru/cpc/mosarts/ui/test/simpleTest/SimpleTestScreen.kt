@@ -16,6 +16,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -27,19 +29,29 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.domain.models.Difficulty
+import ru.cpc.mosarts.domain.models.NamesOfTest
 import ru.cpc.mosarts.domain.models.UserAnswer
-import ru.cpc.mosarts.ui.test.views.Results
-import ru.cpc.mosarts.ui.test.views.SimpleTestQuestion
+import ru.cpc.mosarts.ui.test.simpleTest.views.ExplainDialog
+import ru.cpc.mosarts.ui.test.simpleTest.views.Results
+import ru.cpc.mosarts.ui.test.simpleTest.views.SimpleTestQuestion
 
 @Destination
 @Composable
 fun SimpleTestScreen(
 	navigator: DestinationsNavigator,
-	viewModel: SimpleTestScreenViewModel = hiltViewModel()
+	viewModel: SimpleTestScreenViewModel = hiltViewModel(),
+	test: NamesOfTest,
+	difficulty: Difficulty
 ) {
+	val explainText = remember { mutableStateOf("") }
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
+	val openExplainDialog = remember {
+		state.openExplainDialog
+	}
 	val context = LocalContext.current
 	LaunchedEffect(Unit) {
+		viewModel.init(namesOfTest = test, difficulty = difficulty)
 		viewModel.event.collect {
 			when (it) {
 				is SimpleTestScreenEvent.Error -> Toast.makeText(
@@ -48,17 +60,13 @@ fun SimpleTestScreen(
 				
 				is SimpleTestScreenEvent.WrongAnswer -> {
 					it.explain?.let { explain ->
-						Toast.makeText(
-							context, explain, Toast.LENGTH_LONG
-						).show()
+						explainText.value = explain
 					}
 				}
 				
 				is SimpleTestScreenEvent.RightAnswer -> {
 					it.explain?.let { explain ->
-						Toast.makeText(
-							context, explain, Toast.LENGTH_LONG
-						).show()
+						explainText.value = explain
 					}
 				}
 				
@@ -78,6 +86,9 @@ fun SimpleTestScreen(
 				}
 			}
 		}
+	}
+	if (openExplainDialog.value) {
+		ExplainDialog(text = explainText.value, openDialogCustom = openExplainDialog)
 	}
 	SimpleTestScreenContent(
 		state = state,
