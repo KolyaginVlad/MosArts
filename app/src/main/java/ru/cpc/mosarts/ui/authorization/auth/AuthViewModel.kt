@@ -4,8 +4,9 @@ import com.vk.api.sdk.auth.VKAuthenticationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.cpc.mosarts.domain.models.UserCredentials
 import ru.cpc.mosarts.domain.usecases.GetVkProfileInfoUseCase
-import ru.cpc.mosarts.domain.usecases.SaveTokenUseCase
 import ru.cpc.mosarts.domain.usecases.LoginUseCase
+import ru.cpc.mosarts.domain.usecases.SaveTokenUseCase
+import ru.cpc.mosarts.utils.Constants.emailPattern
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
@@ -18,17 +19,26 @@ class AuthViewModel @Inject constructor(
 
     fun onLoginChange(login: String) {
         updateState {
-            it.copy(email = login)
+            it.copy(email = login, emailError = false)
         }
     }
 
     fun onPasswordChange(password: String) {
         updateState {
-            it.copy(password = password)
+            it.copy(password = password, passwordError = false)
         }
     }
 
     fun onAuth() = launchViewModelScope {
+        if (!(emailPattern matches currentState.email) || currentState.password.isBlank()) {
+            updateState {
+                it.copy(
+                    emailError = !(emailPattern matches it.email),
+                    passwordError = it.password.isBlank()
+                )
+            }
+            return@launchViewModelScope
+        }
         updateState {
             it.copy(isLoading = true)
         }
@@ -60,7 +70,11 @@ class AuthViewModel @Inject constructor(
                             )
                         ).fold(
                             onFailure = {
-                                sendEvent(AuthScreenEvent.ShowToast(it.message ?: "Something went wrong"))
+                                sendEvent(
+                                    AuthScreenEvent.ShowToast(
+                                        it.message ?: "Something went wrong"
+                                    )
+                                )
                             }, onSuccess = {
 //                              sendEvent(AuthScreenEvent.GoToList)
                                 // TODO:

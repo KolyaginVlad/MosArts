@@ -8,8 +8,8 @@ import javax.inject.Inject
 abstract class SendSimpleTestUseCase : UseCase<Unit, TestResults>()
 
 class SendSimpleTestUseCaseImpl @Inject constructor(
-	private val testRepository: TestRepository,
+    private val testRepository: TestRepository,
 ) : SendSimpleTestUseCase() {
-	override suspend fun run(args: TestResults): Result<Unit> =
-		testRepository.sendSimpleTest(args)
+    override suspend fun run(args: TestResults): Result<Unit> =
+        testRepository.sendSimpleTest(args)
 }

@@ -9,12 +9,12 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.vk.api.sdk.VK
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
 import ru.cpc.mosarts.ui.auth.Synchronizer
+import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import ru.cpc.mosarts.ui.theme.Primary
 
 @AndroidEntryPoint

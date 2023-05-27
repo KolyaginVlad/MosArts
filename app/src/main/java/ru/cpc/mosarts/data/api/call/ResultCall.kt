@@ -12,7 +12,7 @@ import java.lang.reflect.Type
  */
 internal class ResultCall<T>(
     private val delegate: Call<T>,
-    private val successType: Type
+    private val successType: Type,
 ) : Call<Result<T>> {
 
     override fun enqueue(callback: Callback<Result<T>>) = delegate.enqueue(object : Callback<T> {

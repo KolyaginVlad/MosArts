@@ -10,13 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -65,7 +62,7 @@ fun SimpleTestScreen(
                 }
 
                 is SimpleTestScreenEvent.StartPlaying -> {
-                    var player = state.audioPlayer
+                    val player = state.audioPlayer
                     if (player.getDataSource() != it.source) {
                         player.reset()
                         player.setAudioAttributes(
@@ -105,7 +102,7 @@ fun SimpleTestScreenContent(
         modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Card(
             shape = RoundedCornerShape(5),
@@ -113,7 +110,7 @@ fun SimpleTestScreenContent(
             modifier = Modifier.padding(20.dp)
         ) {
             Column(
-                modifier = modifier,
+                modifier = modifier.padding(16.dp),
             ) {
                 if (!state.finished) {
                     state.currentQuestion?.let {

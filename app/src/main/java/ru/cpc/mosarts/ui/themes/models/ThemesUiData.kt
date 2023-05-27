@@ -5,7 +5,7 @@ import ru.cpc.mosarts.domain.models.ThemeData
 data class ThemeUiData(
     val id: Int,
     val name: String,
-    val isSelected: Boolean
+    val isSelected: Boolean,
 )
 
 fun ThemeData.mapToUi(isSelected: Boolean) =

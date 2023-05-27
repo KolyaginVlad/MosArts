@@ -35,6 +35,7 @@ import ru.cpc.mosarts.ui.auth.Synchronizer
 import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
 import ru.cpc.mosarts.ui.destinations.RegistrationScreenDestination
+import ru.cpc.mosarts.ui.theme.Black
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
@@ -109,13 +110,13 @@ fun AuthScreenContent(
     ) {
         Column(
             modifier = Modifier
-				.fillMaxSize()
-				.padding(it),
+                .fillMaxSize()
+                .padding(it),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ModifiableSpacer(modifier = Modifier.weight(1f))
-            Text(text = stringResource(id = R.string.auth))
+            Text(text = stringResource(id = R.string.auth), color = Black)
             Spacer(32.dp)
             FormTextField(
                 value = state.email,
@@ -124,7 +125,8 @@ fun AuthScreenContent(
                     Text(
                         text = stringResource(id = R.string.email)
                     )
-                }
+                },
+                isError = state.emailError
             )
             Spacer(16.dp)
             FormTextField(
@@ -134,7 +136,8 @@ fun AuthScreenContent(
                     Text(
                         text = stringResource(id = R.string.password)
                     )
-                }
+                },
+                isError = state.passwordError
             )
             Spacer(32.dp)
             Button(enabled = state.isLoading.not(), onClick = onAuth) {
@@ -147,8 +150,8 @@ fun AuthScreenContent(
             Spacer(32.dp)
             Image(
                 modifier = Modifier
-					.size(48.dp)
-					.clickable(onClick = onVkAuth),
+                    .size(48.dp)
+                    .clickable(onClick = onVkAuth),
                 painter = painterResource(R.drawable.vk),
                 contentDescription = stringResource(R.string.auth_by_vk)
             )

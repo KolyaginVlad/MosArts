@@ -13,8 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ThemesViewModel @Inject constructor(
     getThemesUseCase: GetThemesUseCase,
-    private val sendSelectedThemesUseCase: SendSelectedThemesUseCase
-): BaseViewModel<ThemesScreenState, ThemesScreenEvent>(ThemesScreenState()) {
+    private val sendSelectedThemesUseCase: SendSelectedThemesUseCase,
+) : BaseViewModel<ThemesScreenState, ThemesScreenEvent>(ThemesScreenState()) {
 
     init {
         launchViewModelScope {
@@ -49,6 +49,10 @@ class ThemesViewModel @Inject constructor(
     }
 
     fun onDone() {
+        if (!currentState.themes.any { it.isSelected }) {
+            trySendEvent(ThemesScreenEvent.NotSelected)
+            return
+        }
         launchViewModelScope {
             updateState {
                 it.copy(isLoading = true)

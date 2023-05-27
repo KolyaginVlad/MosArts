@@ -10,7 +10,7 @@ import ru.cpc.mosarts.ui.destinations.SimpleTestScreenDestination
 enum class BottomBarDestination(
     val direction: DirectionDestinationSpec,
     @DrawableRes val icon: Int,
-    @StringRes val topBarTitle: Int
+    @StringRes val topBarTitle: Int,
 ) {
     Map(SchoolMapScreenDestination, R.drawable.baseline_map_24, R.string.school_map),
     Tests(SimpleTestScreenDestination, R.drawable.baseline_notes_24, R.string.test),

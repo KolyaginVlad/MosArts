@@ -8,9 +8,9 @@ import javax.inject.Inject
 abstract class MoreInfUseCase : UseCase<Unit, MoreInf>()
 
 class MoreInfUseCaseImpl @Inject constructor(
-	private val userRepository: UserRepository,
+    private val userRepository: UserRepository,
 ) : MoreInfUseCase() {
-	override suspend fun run(args: MoreInf): Result<Unit> =
-		userRepository.moreInf(args)
-	
+    override suspend fun run(args: MoreInf): Result<Unit> =
+        userRepository.moreInf(args)
+
 }

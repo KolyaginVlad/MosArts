@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.PersistentList
+import ru.cpc.mosarts.ui.theme.Black
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 
 @Composable
@@ -45,6 +46,6 @@ private fun ThemeCheckBoxItem(
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Checkbox(checked = data.isSelected, onCheckedChange = onCheckedChange)
-        Text(text = data.name)
+        Text(text = data.name, color = Black)
     }
 }

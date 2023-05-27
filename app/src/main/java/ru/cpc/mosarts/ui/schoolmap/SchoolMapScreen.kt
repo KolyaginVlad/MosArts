@@ -8,19 +8,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +22,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.yandex.mapkit.map.MapObjectTapListener
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
+import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Map
 
 @MainNavGraph(start = true)
@@ -64,13 +58,18 @@ private fun Content(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TextField(
+        FormTextField(
             modifier = Modifier
                 .height(70.dp)
                 .fillMaxWidth()
                 .padding(8.dp),
             value = state.filter,
-            onValueChange = onFilterChange
+            onValueChange = onFilterChange,
+            label = {
+                Text(
+                    text = stringResource(id = R.string.theme)
+                )
+            }
         )
         Box(modifier = Modifier.fillMaxSize()) {
             Map(
