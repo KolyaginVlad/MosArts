@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -59,7 +58,7 @@ fun ExplainDialogUi(
 	}
 	Card(
 		shape = RoundedCornerShape(40.dp),
-		modifier = Modifier.height(200.dp),
+		modifier = Modifier,
 	) {
 		Column(
 			Modifier

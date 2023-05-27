@@ -10,6 +10,7 @@ import ru.cpc.mosarts.domain.models.NamesOfTest
 fun NamesOfTest.toStringId():Int = when (this){
 	NamesOfTest.TextOptions -> R.string.text_options
 	NamesOfTest.MusicImage -> R.string.music_image
+	NamesOfTest.VideoMusic -> R.string.video_music
 }
 
 @StringRes

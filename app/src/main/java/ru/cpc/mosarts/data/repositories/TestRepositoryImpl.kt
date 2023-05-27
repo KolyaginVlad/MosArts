@@ -21,6 +21,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 		return when (args.name) {
 			NamesOfTest.TextOptions -> optionsTest(args.difficulty)
 			NamesOfTest.MusicImage -> musicTest(args.difficulty)
+			NamesOfTest.VideoMusic -> videoTest(args.difficulty)
 		}
 	}
 	
@@ -97,7 +98,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 							AnswerVariant("танцуют"),
 							AnswerVariant("поют"),
 							AnswerVariant("дирижируют"),
-							AnswerVariant("играют на струнных музыкальных инструментах")
+							AnswerVariant("играют на музыкальных инструментах")
 						),
 						question = QuestionVal(textQuestion = "Чем занимаются участники хора?"),
 						questionId = 13,
@@ -151,7 +152,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						questionId = 23,
 						cost = 2,
 						rightAnswer = UserAnswer("пианист"),
-						explain = ") пианист. Денис Мацуев – российский пианист, Народный артист РФ, победитель XI Международного конкурса имени П.И. Чайковского. "
+						explain = "пианист. Денис Мацуев – российский пианист, Народный артист РФ, победитель XI Международного конкурса имени П.И. Чайковского. "
 					),
 					
 					)
@@ -237,11 +238,44 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						cost = 1,
 						question = QuestionVal(
 							textQuestion = "Какой это инструмент?",
-							source = "android.resource:// ru.cpc.mosarts/ raw/ violin.mp3"
+							source = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
 						),
 						rightAnswer = UserAnswer("Скрипка"),
 						explain = "Скрипка — королева музыкальных инструментов — прошла долгий путь. Её предки встречаются в музыкальных культурах почти всех народов мира. И на деревенском празднике, и в лучшем концертном зале скрипка превосходно играет свою роль — выражает самые глубокие человеческие чувства!"
 					
+					),
+				)
+			)
+		}
+	}
+	
+	private fun videoTest(difficulty: Difficulty): Result<PersistentList<Question>> {
+		when (difficulty) {
+			else -> return Result.success(
+				persistentListOf(
+					Question(
+						questionType = QuestionType.VideoMusic,
+						answerVariants = arrayListOf(
+							AnswerVariant(
+								"1",
+								"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+							),
+							AnswerVariant(
+								"2",
+								"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"
+							),
+							AnswerVariant(
+								"3",
+								"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3"
+							)
+						),
+						questionId = 42,
+						cost = 1,
+						question = QuestionVal(
+							textQuestion = "Какой музыкальный фрагмент подходит сюда?",
+							source = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+						),
+						rightAnswer = UserAnswer("1"),
 					),
 				)
 			)

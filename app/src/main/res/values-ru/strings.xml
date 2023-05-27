@@ -27,6 +27,7 @@
     <string name="easy">Легко</string>
     <string name="cancel">Отмена</string>
     <string name="submit">Вперёд!</string>
+    <string name="video_music">Угадай фильм</string>
 
     <plurals name="points">
         <item quantity="one"> очко</item>

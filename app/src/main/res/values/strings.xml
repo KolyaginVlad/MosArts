@@ -28,6 +28,7 @@
     <string name="hard">Hard</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Ok</string>
+    <string name="video_music">Guess the film</string>
 
 
     <plurals name="points">

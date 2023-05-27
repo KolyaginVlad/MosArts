@@ -3,6 +3,7 @@ package ru.cpc.mosarts.ui.test.simpleTest
 import android.media.AudioAttributes
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -115,35 +117,45 @@ fun SimpleTestScreenContent(
 			TopAppBar(title = { Text(stringResource(id = R.string.test)) })
 		}
 	) {
-		Column(
-			modifier = modifier
-				.padding(it)
-				.fillMaxSize(),
-			verticalArrangement = Arrangement.Center,
-			horizontalAlignment = Alignment.CenterHorizontally
-		) {
-			Card(
-				shape = RoundedCornerShape(5),
-				elevation = 10.dp,
-				modifier = Modifier.padding(20.dp)
+		if (state.isLoading) {
+			Box(
+				modifier = Modifier
+					.fillMaxSize()
+					.padding(it),
+				contentAlignment = Alignment.Center
 			) {
-				Column(
-					modifier = modifier,
+				CircularProgressIndicator()
+			}
+		} else {
+			Column(
+				modifier = modifier
+					.padding(it)
+					.fillMaxSize(),
+				verticalArrangement = Arrangement.Center,
+				horizontalAlignment = Alignment.CenterHorizontally
+			) {
+				Card(
+					shape = RoundedCornerShape(5),
+					elevation = 10.dp,
+					modifier = Modifier.padding(20.dp)
 				) {
-					if (!state.finished) {
-						state.currentQuestion?.let {
-							state.questions[it].let { question ->
-								SimpleTestQuestion(
-									question = question,
-									answer = state.answers[it],
-									onAnswerChange = onAnswerChange,
-									modifier = Modifier.fillMaxWidth(),
-									player = state.audioPlayer,
-									startPlayer = startPlayer
-								)
+					Column(
+						modifier = modifier,
+					) {
+						if (!state.finished) {
+							state.currentQuestion?.let {
+								state.questions[it].let { question ->
+									SimpleTestQuestion(
+										question = question,
+										answer = state.answers[it],
+										onAnswerChange = onAnswerChange,
+										modifier = Modifier.fillMaxWidth(),
+										player = state.audioPlayer,
+										startPlayer = startPlayer
+									)
+								}
 							}
-						}
-						/*	Row(
+							/*	Row(
 								horizontalArrangement = Arrangement.SpaceBetween,
 								modifier = Modifier.fillMaxWidth()
 							) {
@@ -155,11 +167,15 @@ fun SimpleTestScreenContent(
 									Text(text = stringResource(id = R.string.next_question))
 								}
 							}*/
-						Button(onClick = sendTest, modifier = Modifier.align(CenterHorizontally)) {
-							Text(text = stringResource(id = R.string.finish_test))
+							Button(
+								onClick = sendTest,
+								modifier = Modifier.align(CenterHorizontally)
+							) {
+								Text(text = stringResource(id = R.string.finish_test))
+							}
+						} else {
+							Results(points = state.results.points)
 						}
-					} else {
-						Results(points = state.results.points)
 					}
 				}
 			}

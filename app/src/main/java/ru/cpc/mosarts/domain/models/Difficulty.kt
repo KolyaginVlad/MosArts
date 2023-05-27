@@ -10,7 +10,7 @@ enum class NamesOfTest {
 	//TextText,
 	TextOptions,
 	MusicImage,
-	//VideoMusic,
+	VideoMusic,
 }
 
 data class TestParams(

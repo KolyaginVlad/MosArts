@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -71,7 +73,9 @@ fun TestSelectScreenContent(
 	state: TestSelectScreenState,
 	onVariantClick: (NamesOfTest) -> Unit
 ) {
-	Column {
+	val scrollState = rememberScrollState()
+	
+	Column(modifier = Modifier.verticalScroll(scrollState)) {
 		NamesOfTest.values().forEach {
 			VariantOfTest(
 				namesOfTest = it,
@@ -100,7 +104,7 @@ fun VariantOfTest(
 		Text(
 			text = stringResource(id = namesOfTest.toStringId()),
 			modifier = Modifier.padding(40.dp),
-			style = MaterialTheme.typography.h3
+			style = MaterialTheme.typography.h4
 		)
 	}
 }

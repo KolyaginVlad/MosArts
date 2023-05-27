@@ -81,6 +81,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 						questions = questions,
 						answers = answers.toMutableStateList(),
 						currentQuestion = 0,
+						isLoading = false
 					)
 				}
 			}
