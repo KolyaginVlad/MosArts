@@ -20,6 +20,14 @@
     <string name="test_is_finished"> Тест завершён </string>
     <string name="test_points"> Вы заработали  </string>
     <string name="test">Тест</string>
+    <string name="text_options">Проверь свои знания</string>
+    <string name="music_image">Угадай инструмент</string>
+    <string name="medium">Средне</string>
+    <string name="hard">Тяжело</string>
+    <string name="easy">Легко</string>
+    <string name="cancel">Отмена</string>
+    <string name="submit">Вперёд!</string>
+    <string name="video_music">Угадай фильм</string>
     <plurals name="points">
         <item quantity="one"> очко</item>
         <item quantity="few"> очка</item>
@@ -33,4 +41,5 @@
     <string name="school_map">Карта школ</string>
     <string name="theme">Направление обучения</string>
     <string name="not_selected">Пожалуйста, выберите хотя бы одно направление</string>
+    <string name="back_to_tests">Вернуться к тестам</string>
 </resources>

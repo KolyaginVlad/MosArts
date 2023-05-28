@@ -7,16 +7,17 @@ import kotlinx.collections.immutable.persistentListOf
 import ru.cpc.mosarts.domain.models.Question
 import ru.cpc.mosarts.domain.models.TestResults
 import ru.cpc.mosarts.domain.models.UserAnswer
-import ru.cpc.mosarts.ui.test.views.players.CustomMediaPlayer
+import ru.cpc.mosarts.ui.test.simpleTest.views.players.CustomMediaPlayer
 import ru.cpc.mosarts.utils.base.State
 
 
 data class SimpleTestScreenState(
-    val isLoading: Boolean = true,
-    val questions: PersistentList<Question> = persistentListOf(),
-    val answers: SnapshotStateList<UserAnswer> = mutableStateListOf(),
-    val currentQuestion: Int? = null,
-    val audioPlayer: CustomMediaPlayer = CustomMediaPlayer(),
-    val results: TestResults = TestResults(),
-    val finished: Boolean = false,
+	val isLoading: Boolean = true,
+	val questions: PersistentList<Question> = persistentListOf(),
+	val answers: SnapshotStateList<UserAnswer> = mutableStateListOf(),
+	val currentQuestion: Int? = null,
+	val audioPlayer: CustomMediaPlayer = CustomMediaPlayer(),
+	val results: TestResults = TestResults(),
+	val finished: Boolean = false,
+	val openExplainDialog:Boolean = false
 ) : State()

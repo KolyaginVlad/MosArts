@@ -3,7 +3,7 @@ package ru.cpc.mosarts.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(175, 204, 70)
-val PrimaryVariant = Color(207, 229, 166)
+val PrimaryVariant = Color(175, 204, 70)
 val Secondary = Color(109, 131, 103)
 val White = Color(230, 231, 232)
 val Black = Color(64, 94, 65)

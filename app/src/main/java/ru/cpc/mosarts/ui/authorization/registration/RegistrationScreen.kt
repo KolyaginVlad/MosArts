@@ -18,11 +18,15 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -131,7 +135,15 @@ fun RegistrationScreenContent(
                 label = ({
                     Text(text = stringResource(id = R.string.password))
                 }),
-                isError = state.passwordError
+                isError = state.passwordError,
+                visualTransformation = remember {
+                    {
+                        TransformedText(
+                            AnnotatedString("*".repeat(it.length)),
+                            OffsetMapping.Identity
+                        )
+                    }
+                }
             )
             Spacer(16.dp)
             FormTextField(
@@ -140,7 +152,15 @@ fun RegistrationScreenContent(
                 label = {
                     Text(text = stringResource(id = R.string.second_password))
                 },
-                isError = state.secondPasswordError
+                isError = state.secondPasswordError,
+                visualTransformation = remember {
+                    {
+                        TransformedText(
+                            AnnotatedString("*".repeat(it.length)),
+                            OffsetMapping.Identity
+                        )
+                    }
+                }
             )
             Spacer(32.dp)
             Button(enabled = state.isLoading.not(), onClick = onAuth) {

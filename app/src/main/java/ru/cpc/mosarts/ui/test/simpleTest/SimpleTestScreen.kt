@@ -3,17 +3,25 @@ package ru.cpc.mosarts.ui.test.simpleTest
 import android.media.AudioAttributes
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,68 +32,91 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
+import ru.cpc.mosarts.domain.models.Difficulty
+import ru.cpc.mosarts.domain.models.NamesOfTest
 import ru.cpc.mosarts.domain.models.UserAnswer
 import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
-import ru.cpc.mosarts.ui.test.views.Results
-import ru.cpc.mosarts.ui.test.views.SimpleTestQuestion
+import ru.cpc.mosarts.ui.destinations.TestSelectScreenDestination
+import ru.cpc.mosarts.ui.test.simpleTest.views.ExplainDialog
+import ru.cpc.mosarts.ui.test.simpleTest.views.SimpleTestQuestion
+import ru.cpc.mosarts.ui.test.simpleTest.views.Results
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
 
-@MainNavGraph
 @Destination
+@MainNavGraph
 @Composable
 fun SimpleTestScreen(
-    navigator: DestinationsNavigator,
-    viewModel: SimpleTestScreenViewModel = hiltViewModel(),
+	navigator: DestinationsNavigator,
+	viewModel: SimpleTestScreenViewModel = hiltViewModel(),
+	test: NamesOfTest,
+	difficulty: Difficulty
 ) {
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val explainText = remember { mutableStateOf("") }
+	val state by viewModel.screenState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.event.collect {
-            when (it) {
-                is SimpleTestScreenEvent.Error -> Toast.makeText(
-                    context, it.text, Toast.LENGTH_LONG
-                ).show()
+        viewModel.init(namesOfTest = test, difficulty = difficulty)
+		viewModel.event.collect {
+			when (it) {
+				is SimpleTestScreenEvent.Error -> Toast.makeText(
+					context, it.text, Toast.LENGTH_LONG
+				).show()
 
-                is SimpleTestScreenEvent.WrongAnswer -> {
-                    it.explain?.let { explain ->
-                        Toast.makeText(
-                            context, explain, Toast.LENGTH_LONG
-                        ).show()
+				is SimpleTestScreenEvent.WrongAnswer -> {
+					it.explain?.let { explain ->
+						explainText.value = explain
                     }
                 }
 
                 is SimpleTestScreenEvent.RightAnswer -> {
                     it.explain?.let { explain ->
-                        Toast.makeText(
-                            context, explain, Toast.LENGTH_LONG
-                        ).show()
+                        explainText.value = explain
                     }
                 }
 
                 is SimpleTestScreenEvent.StartPlaying -> {
                     val player = state.audioPlayer
-                    if (player.getDataSource() != it.source) {
-                        player.reset()
-                        player.setAudioAttributes(
-                            AudioAttributes.Builder()
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .build()
-                        )
-                        player.setDataSource(it.source)
-                        player.prepareAsync()
-                    } else player.start()
+					if (player.getDataSource() != it.source) {
+						player.reset()
+						player.setAudioAttributes(
+							AudioAttributes.Builder()
+								.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+								.build()
+						)
+						player.setDataSource(it.source)
+						player.prepareAsync()
+					} else player.start()
 
-                }
+				}
+
+                SimpleTestScreenEvent.BackToTests -> navigator.navigateWithClearBackStack(
+                    TestSelectScreenDestination
+                )
             }
-        }
+		}
+	}
+	if (state.openExplainDialog) {
+		ExplainDialog(text = explainText.value, onDismissRequest = viewModel::onDismissExplain)
     }
-    SimpleTestScreenContent(
-        state = state,
-        onAnswerChange = viewModel::onAnswerChange,
-        sendTest = viewModel::sendTest,
-        nextQuestion = viewModel::nextQuestion,
-        previousQuestion = viewModel::previousQuestion,
-        startPlayer = viewModel::startPlayer
-    )
+	if (state.isLoading) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.Center
+		) {
+			CircularProgressIndicator()
+		}
+	} else {
+		SimpleTestScreenContent(
+			state = state,
+			onAnswerChange = viewModel::onAnswerChange,
+			sendTest = viewModel::sendTest,
+			nextQuestion = viewModel::nextQuestion,
+			previousQuestion = viewModel::previousQuestion,
+			startPlayer = viewModel::startPlayer,
+            onBackToTests = viewModel::onBackToTests
+		)
+	}
 }
 
 @Composable
@@ -95,6 +126,7 @@ fun SimpleTestScreenContent(
     sendTest: () -> Unit,
     nextQuestion: () -> Unit,
     previousQuestion: () -> Unit,
+    onBackToTests: () -> Unit,
     startPlayer: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -110,20 +142,19 @@ fun SimpleTestScreenContent(
             modifier = Modifier.padding(20.dp)
         ) {
             Column(
-                modifier = modifier.padding(16.dp),
+                modifier = modifier
+                    .padding(16.dp),
             ) {
                 if (!state.finished) {
                     state.currentQuestion?.let {
-                        state.questions[it].let { question ->
-                            SimpleTestQuestion(
-                                question = question,
-                                answer = state.answers[it],
-                                onAnswerChange = onAnswerChange,
-                                modifier = Modifier.fillMaxWidth(),
-                                player = state.audioPlayer,
-                                startPlayer = startPlayer
-                            )
-                        }
+                        SimpleTestQuestion(
+                            question = state.questions[it],
+                            answer = state.answers[it],
+                            onAnswerChange = onAnswerChange,
+                            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
+                            player = state.audioPlayer,
+                            startPlayer = startPlayer
+                        )
                     }
                     /*	Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -141,7 +172,7 @@ fun SimpleTestScreenContent(
                         Text(text = stringResource(id = R.string.finish_test))
                     }
                 } else {
-                    Results(points = state.results.points)
+                    Results(points = state.results.points, onBackToTests = onBackToTests)
                 }
             }
         }

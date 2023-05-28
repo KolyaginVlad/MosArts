@@ -76,8 +76,7 @@ class AuthViewModel @Inject constructor(
                                     )
                                 )
                             }, onSuccess = {
-//                              sendEvent(AuthScreenEvent.GoToList)
-                                // TODO:
+                              sendEvent(AuthScreenEvent.GoToActivities)
                             }
                         )
                     },

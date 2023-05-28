@@ -3,6 +3,9 @@ package ru.cpc.mosarts.ui.test.simpleTest
 import androidx.compose.runtime.toMutableStateList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import ru.cpc.mosarts.domain.models.Difficulty
+import ru.cpc.mosarts.domain.models.NamesOfTest
+import ru.cpc.mosarts.domain.models.TestParams
 import ru.cpc.mosarts.domain.models.TestResults
 import ru.cpc.mosarts.domain.models.UserAnswer
 import ru.cpc.mosarts.domain.usecases.GetSimpleTestUseCase
@@ -16,36 +19,42 @@ class SimpleTestScreenViewModel @Inject constructor(
     private val sendSimpleTestUseCase: SendSimpleTestUseCase,
 ) : BaseViewModel<SimpleTestScreenState, SimpleTestScreenEvent>(SimpleTestScreenState()) {
 
-    init {
+    fun init(namesOfTest: NamesOfTest, difficulty: Difficulty) {
         launchViewModelScope {
-            getTest()
-        }
-    }
+            getTest(namesOfTest, difficulty)
+		}
+	}
 
-    fun onAnswerChange(answer: UserAnswer) {
-        if (currentState.currentQuestion?.let { currentState.answers[it] } == UserAnswer()) {
-            launchViewModelScope {
-                updateState { testScreenState ->
-                    testScreenState.copy(
-                        answers = testScreenState.answers.mapIndexed { index, answe ->
-                            if (index == testScreenState.currentQuestion) {
-                                answer
-                            } else answe
-                        }.toMutableStateList()
-                    )
-                }
-                if (checkAnswer(answer)) {
-                    sendEvent(
-                        SimpleTestScreenEvent.RightAnswer(curQuestion()?.explain)
-                    )
-                    curQuestion()?.let { question ->
-                        updateState { it.copy(results = TestResults(points = it.results.points + question.cost)) }
-                    }
-                } else sendEvent(
-                    SimpleTestScreenEvent.WrongAnswer(curQuestion()?.explain)
-                )
-                delay(1500)
-                nextQuestion()
+	fun onAnswerChange(answer: UserAnswer) {
+		if (currentState.currentQuestion?.let { currentState.answers[it] } == UserAnswer()) {
+			launchViewModelScope {
+				updateState { testScreenState ->
+					testScreenState.copy(
+						answers = testScreenState.answers.mapIndexed { index, answe ->
+							if (index == testScreenState.currentQuestion) {
+								answer
+							} else answe
+						}.toMutableStateList()
+					)
+				}
+				if (checkAnswer(answer)) {
+					sendEvent(
+						SimpleTestScreenEvent.RightAnswer(curQuestion()?.explain)
+					)
+					curQuestion()?.let { question ->
+						updateState { it.copy(results = TestResults(points = it.results.points + question.cost)) }
+					}
+				} else sendEvent(
+					SimpleTestScreenEvent.WrongAnswer(curQuestion()?.explain)
+				)
+				if (curQuestion()?.explain.isNullOrBlank()) {
+					delay(1500)
+					nextQuestion()
+				} else {
+					updateState {
+						it.copy(openExplainDialog = true)
+					}
+				}
             }
         }
     }
@@ -60,60 +69,61 @@ class SimpleTestScreenViewModel @Inject constructor(
         } ?: false
 
 
-    private suspend fun getTest() {
-        getSimpleTestUseCase().fold(
-            onFailure = {
-                sendEvent(SimpleTestScreenEvent.Error(it.message ?: "Something went wrong"))
-            }, onSuccess = { questions ->
-                val answers = arrayListOf<UserAnswer>()
-                questions.forEach { _ ->
-                    answers.add(
-                        UserAnswer()
-                    )
-                }
-                updateState {
-                    it.copy(
-                        questions = questions,
-                        answers = answers.toMutableStateList(),
-                        currentQuestion = 0,
-                    )
-                }
-            }
-        )
-    }
+    private suspend fun getTest(namesOfTest: NamesOfTest, difficulty: Difficulty) {
+        getSimpleTestUseCase(TestParams(namesOfTest, difficulty)).fold(
+			onFailure = {
+				sendEvent(SimpleTestScreenEvent.Error(it.message ?: "Something went wrong"))
+			}, onSuccess = { questions ->
+				val answers = arrayListOf<UserAnswer>()
+				questions.forEach { _ ->
+					answers.add(
+						UserAnswer()
+					)
+				}
+				updateState {
+					it.copy(
+						questions = questions,
+						answers = answers.toMutableStateList(),
+						currentQuestion = 0,
+						isLoading = false
+					)
+				}
+			}
+		)
+	}
 
-    fun sendTest() {
-        updateState {
-            it.copy(isLoading = true)
-        }
-        launchViewModelScope {
-            sendSimpleTestUseCase(currentState.results).fold(
-                onFailure = {
-                    handleException(it)
-                    sendEvent(
-                        SimpleTestScreenEvent.Error("Error")
-                    )
-                    updateState {
-                        it.copy(isLoading = false)
-                    }
-                }, onSuccess = {
-                    // TODO:
-                    updateState {
-                        it.copy(isLoading = false, finished = true)
-                    }
-                }
-            )
-        }
-    }
+	fun sendTest() {
+		updateState {
+			it.copy(isLoading = true, openExplainDialog = false)
+		}
+		launchViewModelScope {
+			sendSimpleTestUseCase(currentState.results).fold(
+				onFailure = {
+					handleException(it)
+					sendEvent(
+						SimpleTestScreenEvent.Error("Error")
+					)
+					updateState {
+						it.copy(isLoading = false)
+					}
+				}, onSuccess = {
+					// TODO:
+					updateState {
+						it.copy(isLoading = false, finished = true)
+					}
+				}
+			)
+		}
+	}
 
-    fun nextQuestion() {
-        if (currentState.questions.size - 1 > currentState.currentQuestion ?: 0) {
-            updateState {
-                it.copy(
-                    currentQuestion =
-                    it.currentQuestion?.plus(1)
-                )
-            }
+	fun nextQuestion() {
+		if (currentState.questions.size - 1 > currentState.currentQuestion ?: 0) {
+			updateState {
+				it.copy(
+					currentQuestion = it.currentQuestion?.plus(1),
+					openExplainDialog = false
+				)
+			}
         } else sendTest()
     }
 
@@ -136,5 +146,12 @@ class SimpleTestScreenViewModel @Inject constructor(
         }
     }
 
+    fun onDismissExplain() {
+		nextQuestion()
+    }
+
+	fun onBackToTests() {
+		trySendEvent(SimpleTestScreenEvent.BackToTests)
+	}
 }
 

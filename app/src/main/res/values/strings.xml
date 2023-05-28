@@ -21,6 +21,14 @@
     <string name="test_is_finished"> Test is finished </string>
     <string name="test_points"> You earned  </string>
     <string name="test"> Test  </string>
+    <string name="text_options">Check your knowledge</string>
+    <string name="music_image">Guess the tool</string>
+    <string name="medium">Medium</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Ok</string>
+    <string name="video_music">Guess the film</string>
 
 
     <plurals name="points">
@@ -36,4 +44,5 @@
     <string name="school_map">Schools map</string>
     <string name="theme">Direction of study</string>
     <string name="not_selected">Please select at least one direction</string>
+    <string name="back_to_tests">Back to tests</string>
 </resources>

@@ -116,7 +116,7 @@ fun Map(
                     listOfSchool.forEach { school ->
                         it.map.mapObjects.addPlacemark(
                             Point(school.latitude, school.longitude),
-                            ImageProvider.fromBitmap(drawSimpleBitmap(school.id.toString()))
+                            ImageProvider.fromBitmap(drawSimpleBitmap((school.id+1).toString()))
                         )
                     }
                     it.map.mapObjects.addTapListener(onSchoolTap)
@@ -127,7 +127,7 @@ fun Map(
                 listOfSchool.forEach { school ->
                     it.map.mapObjects.addPlacemark(
                         Point(school.latitude, school.longitude),
-                        ImageProvider.fromBitmap(drawSimpleBitmap(school.id.toString()))
+                        ImageProvider.fromBitmap(drawSimpleBitmap((school.id+1).toString()))
                     )
                 }
                 userLocation?.let { point ->
