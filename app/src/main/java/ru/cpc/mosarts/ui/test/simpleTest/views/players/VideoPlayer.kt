@@ -11,24 +11,24 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
 fun VideoPlayer(videoUri: String, modifier: Modifier) {
-	val context = LocalContext.current
-	val exoPlayer = ExoPlayer.Builder(LocalContext.current)
-		.build()
-		.also { exoPlayer ->
-			val mediaItem = MediaItem.Builder()
-				.setUri(videoUri)
-				.build()
-			exoPlayer.setMediaItem(mediaItem)
-			exoPlayer.prepare()
-		}
-	
-	DisposableEffect(
-		AndroidView(factory = {
-			StyledPlayerView(context).apply {
-				player = exoPlayer
-			}
-		}, modifier = modifier)
-	) {
-		onDispose { exoPlayer.release() }
-	}
+    val context = LocalContext.current
+    val exoPlayer = ExoPlayer.Builder(LocalContext.current)
+        .build()
+        .also { exoPlayer ->
+            val mediaItem = MediaItem.Builder()
+                .setUri(videoUri)
+                .build()
+            exoPlayer.setMediaItem(mediaItem)
+            exoPlayer.prepare()
+        }
+
+    DisposableEffect(
+        AndroidView(factory = {
+            StyledPlayerView(context).apply {
+                player = exoPlayer
+            }
+        }, modifier = modifier)
+    ) {
+        onDispose { exoPlayer.release() }
+    }
 }

@@ -1,8 +1,8 @@
 package com.osinit.mycompany.domain.usecases.common
 
 /**
-* UseCase с единичным результатом без параметров
-*/
+ * UseCase с единичным результатом без параметров
+ */
 abstract class NoArgsUseCase<out Type> : UseCase<Type, Unit>() {
 
     suspend operator fun invoke() = invoke(Unit)

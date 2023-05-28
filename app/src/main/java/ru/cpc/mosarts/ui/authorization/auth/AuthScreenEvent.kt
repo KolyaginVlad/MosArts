@@ -4,10 +4,13 @@ import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.utils.base.Event
 
 sealed class AuthScreenEvent : Event() {
-	class ShowToast(val text: String) : AuthScreenEvent()
+    class ShowToast(val text: String) : AuthScreenEvent()
 
-    object LoginVk: AuthScreenEvent()
+    object LoginVk : AuthScreenEvent()
+    object GoToRegister : AuthScreenEvent()
+    object CantLoginByVk : AuthScreenEvent()
+    object GoToActivities : AuthScreenEvent()
 
-    class GoToMoreInf(val profileInfo: ProfileInfo? = null): AuthScreenEvent()
+    class GoToMoreInf(val profileInfo: ProfileInfo? = null) : AuthScreenEvent()
 
 }

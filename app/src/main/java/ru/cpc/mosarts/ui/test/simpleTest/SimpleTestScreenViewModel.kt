@@ -14,18 +14,17 @@ import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-
 class SimpleTestScreenViewModel @Inject constructor(
-	private val getSimpleTestUseCase: GetSimpleTestUseCase,
-	private val sendSimpleTestUseCase: SendSimpleTestUseCase,
+    private val getSimpleTestUseCase: GetSimpleTestUseCase,
+    private val sendSimpleTestUseCase: SendSimpleTestUseCase,
 ) : BaseViewModel<SimpleTestScreenState, SimpleTestScreenEvent>(SimpleTestScreenState()) {
-	
-	fun init(namesOfTest: NamesOfTest, difficulty: Difficulty) {
-		launchViewModelScope {
-			getTest(namesOfTest, difficulty)
+
+    fun init(namesOfTest: NamesOfTest, difficulty: Difficulty) {
+        launchViewModelScope {
+            getTest(namesOfTest, difficulty)
 		}
 	}
-	
+
 	fun onAnswerChange(answer: UserAnswer) {
 		if (currentState.currentQuestion?.let { currentState.answers[it] } == UserAnswer()) {
 			launchViewModelScope {
@@ -49,24 +48,24 @@ class SimpleTestScreenViewModel @Inject constructor(
 					SimpleTestScreenEvent.WrongAnswer(curQuestion()?.explain)
 				)
 				currentState.openExplainDialog.value=true
-				delay(2500)
-				nextQuestion()
-			}
-		}
-	}
-	
-	private fun curQuestion() = currentState.currentQuestion?.let {
-		currentState.questions[it]
-	}
-	
-	fun checkAnswer(answer: UserAnswer) =
-		currentState.currentQuestion?.let {
-			currentState.questions[it].rightAnswer == answer
-		} ?: false
-	
-	
-	private suspend fun getTest(namesOfTest: NamesOfTest, difficulty: Difficulty) {
-		getSimpleTestUseCase(TestParams(namesOfTest, difficulty)).fold(
+                delay(1500)
+                nextQuestion()
+            }
+        }
+    }
+
+    private fun curQuestion() = currentState.currentQuestion?.let {
+        currentState.questions[it]
+    }
+
+    private fun checkAnswer(answer: UserAnswer) =
+        currentState.currentQuestion?.let {
+            currentState.questions[it].rightAnswer == answer
+        } ?: false
+
+
+    private suspend fun getTest(namesOfTest: NamesOfTest, difficulty: Difficulty) {
+        getSimpleTestUseCase(TestParams(namesOfTest, difficulty)).fold(
 			onFailure = {
 				sendEvent(SimpleTestScreenEvent.Error(it.message ?: "Something went wrong"))
 			}, onSuccess = { questions ->
@@ -87,7 +86,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 			}
 		)
 	}
-	
+
 	fun sendTest() {
 		currentState.openExplainDialog.value=false
 		updateState {
@@ -112,7 +111,7 @@ class SimpleTestScreenViewModel @Inject constructor(
 			)
 		}
 	}
-	
+
 	fun nextQuestion() {
 		if (currentState.questions.size - 1 > currentState.currentQuestion ?: 0) {
 			updateState {
@@ -122,27 +121,26 @@ class SimpleTestScreenViewModel @Inject constructor(
 				)
 			}
 			currentState.openExplainDialog.value=false
-		} else sendTest()
-	}
-	
-	fun startPlayer(source: String) {
-		launchViewModelScope {
-			sendEvent(SimpleTestScreenEvent.StartPlaying(source))
-		}
-		logger.debug(currentState.audioPlayer.getDataSource() ?: "Sourse")
-	}
-	
-	fun previousQuestion() {
-		updateState {
-			it.copy(
-				currentQuestion =
-				if (0 < it.currentQuestion ?: 0)
-					it.currentQuestion?.minus(1)
-				else it.currentQuestion
-			
-			)
-		}
-	}
-	
+        } else sendTest()
+    }
+
+    fun startPlayer(source: String) {
+        launchViewModelScope {
+            sendEvent(SimpleTestScreenEvent.StartPlaying(source))
+        }
+        logger.debug(currentState.audioPlayer.getDataSource() ?: "Sourse")
+    }
+
+    fun previousQuestion() {
+        updateState {
+            it.copy(
+                currentQuestion =
+                if (0 < it.currentQuestion ?: 0)
+                    it.currentQuestion?.minus(1)
+                else it.currentQuestion
+
+            )
+        }
+    }
 }
 

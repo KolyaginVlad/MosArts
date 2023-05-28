@@ -13,6 +13,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,10 +32,15 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.vk.api.sdk.auth.VKScope
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.auth.Synchronizer
+import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
 import ru.cpc.mosarts.ui.destinations.MoreInfScreenDestination
+import ru.cpc.mosarts.ui.destinations.RegistrationScreenDestination
+import ru.cpc.mosarts.ui.theme.Black
 import ru.cpc.mosarts.ui.theme.MosArtsTheme
 import ru.cpc.mosarts.ui.views.FormTextField
 import ru.cpc.mosarts.ui.views.Spacer
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
+import androidx.compose.foundation.layout.Spacer as ModifiableSpacer
 
 @Destination
 @Composable
@@ -55,8 +61,20 @@ fun AuthScreen(
                     Synchronizer.login(listOf(VKScope.EMAIL, VKScope.FRIENDS))
                 }
 
-                is AuthScreenEvent.GoToMoreInf -> navigator.navigate(
+                is AuthScreenEvent.GoToMoreInf -> navigator.navigateWithClearBackStack(
                     MoreInfScreenDestination(it.profileInfo)
+                )
+
+                AuthScreenEvent.GoToRegister -> navigator.navigateWithClearBackStack(
+                    RegistrationScreenDestination
+                )
+
+                AuthScreenEvent.CantLoginByVk -> Toast.makeText(
+                    context, context.getString(R.string.cant_login_by_vk), Toast.LENGTH_LONG
+                ).show()
+
+                AuthScreenEvent.GoToActivities -> navigator.navigateWithClearBackStack(
+                    ActivitiesScreenDestination
                 )
             }
         }
@@ -71,7 +89,8 @@ fun AuthScreen(
         onLoginChange = viewModel::onLoginChange,
         onPasswordChange = viewModel::onPasswordChange,
         onAuth = viewModel::onAuth,
-        onVkAuth = viewModel::onVkAuth
+        onVkAuth = viewModel::onVkAuth,
+        onGoToRegister = viewModel::onGoToRegister
     )
 }
 
@@ -82,6 +101,7 @@ fun AuthScreenContent(
     onPasswordChange: (String) -> Unit,
     onAuth: () -> Unit,
     onVkAuth: () -> Unit,
+    onGoToRegister: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -90,12 +110,13 @@ fun AuthScreenContent(
     ) {
         Column(
             modifier = Modifier
-				.fillMaxSize()
-				.padding(it),
+                .fillMaxSize()
+                .padding(it),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.auth))
+            ModifiableSpacer(modifier = Modifier.weight(1f))
+            Text(text = stringResource(id = R.string.auth), color = Black)
             Spacer(32.dp)
             FormTextField(
                 value = state.email,
@@ -104,7 +125,8 @@ fun AuthScreenContent(
                     Text(
                         text = stringResource(id = R.string.email)
                     )
-                }
+                },
+                isError = state.emailError
             )
             Spacer(16.dp)
             FormTextField(
@@ -114,7 +136,8 @@ fun AuthScreenContent(
                     Text(
                         text = stringResource(id = R.string.password)
                     )
-                }
+                },
+                isError = state.passwordError
             )
             Spacer(32.dp)
             Button(enabled = state.isLoading.not(), onClick = onAuth) {
@@ -127,11 +150,15 @@ fun AuthScreenContent(
             Spacer(32.dp)
             Image(
                 modifier = Modifier
-					.size(48.dp)
-					.clickable(onClick = onVkAuth),
+                    .size(48.dp)
+                    .clickable(onClick = onVkAuth),
                 painter = painterResource(R.drawable.vk),
                 contentDescription = stringResource(R.string.auth_by_vk)
             )
+            ModifiableSpacer(modifier = Modifier.weight(1f))
+            TextButton(onClick = onGoToRegister) {
+                Text(text = stringResource(id = R.string.register))
+            }
         }
     }
 }
@@ -141,6 +168,6 @@ fun AuthScreenContent(
 @Composable
 private fun AuthScreenPreview() {
     MosArtsTheme {
-        AuthScreenContent(AuthScreenState("123", "321"), { }, { }, { }, { })
+        AuthScreenContent(AuthScreenState("123", "321"), { }, { }, { }, { }, { })
     }
 }

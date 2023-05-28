@@ -6,6 +6,7 @@ import ru.cpc.mosarts.domain.models.UserCredentials
 import ru.cpc.mosarts.domain.usecases.GetVkProfileInfoUseCase
 import ru.cpc.mosarts.domain.usecases.RegistrationUseCase
 import ru.cpc.mosarts.domain.usecases.SaveTokenUseCase
+import ru.cpc.mosarts.utils.Constants
 import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
@@ -18,49 +19,56 @@ class RegistrationViewModel @Inject constructor(
 ) : BaseViewModel<RegistrationScreenState, RegistrationScreenEvent>(RegistrationScreenState()) {
     fun onLoginChange(login: String) {
         updateState {
-            it.copy(email = login)
+            it.copy(email = login, emailError = false)
         }
     }
 
     fun onPasswordChange(password: String) {
         updateState {
-            it.copy(password = password)
+            it.copy(password = password, passwordError = false)
         }
     }
 
     fun onSecondPasswordChange(password: String) {
         updateState {
-            it.copy(secondPassword = password)
+            it.copy(secondPassword = password, secondPasswordError = false)
         }
     }
 
     fun onAuth() = launchViewModelScope {
+        if (
+            !(Constants.emailPattern matches currentState.email)
+            || currentState.password.isBlank()
+            || !currentState.checkPasswords()
+        ) {
+            updateState {
+                it.copy(
+                    emailError = !(Constants.emailPattern matches it.email),
+                    passwordError = it.password.isBlank(),
+                    secondPasswordError = !it.checkPasswords()
+                )
+            }
+            return@launchViewModelScope
+        }
         updateState {
             it.copy(isLoading = true)
         }
-        if (currentState.checkPasswords()) {
-            registrationUseCase(UserCredentials(currentState.email, currentState.password))
-                .fold(
-                    onFailure = {
-                        sendEvent(
-                            RegistrationScreenEvent.ShowToast(
-                                it.message ?: "Something went wrong"
-                            )
+        registrationUseCase(UserCredentials(currentState.email, currentState.password))
+            .fold(
+                onFailure = {
+                    sendEvent(
+                        RegistrationScreenEvent.ShowToast(
+                            it.message ?: "Something went wrong"
                         )
-                    }, onSuccess = {
-                        // TODO:
-                        sendEvent(RegistrationScreenEvent.GoToMoreInf())
-                    }
-                )
-            updateState {
-                RegistrationScreenState() //Сбрасываю на начальное состояние
-            }
-        } else {
-            sendEvent(RegistrationScreenEvent.ShowToast("Different passwords"))
-            updateState {
-                it.copy(isLoading = false)
-            }
+                    )
+                }, onSuccess = {
+                    sendEvent(RegistrationScreenEvent.GoToMoreInf())
+                }
+            )
+        updateState {
+            RegistrationScreenState() //Сбрасываю на начальное состояние
         }
+
     }
 
     fun onGetVkToken(vkAuthenticationResult: VKAuthenticationResult?) {
@@ -68,11 +76,29 @@ class RegistrationViewModel @Inject constructor(
             launchViewModelScope {
                 saveTokenUseCase(vkAuthenticationResult.token.accessToken)
                 getVkProfileInfoUseCase().fold(
-                    onSuccess = {
-                        sendEvent(
-                            RegistrationScreenEvent.GoToMoreInf(
-                                it
+                    onSuccess = { profile ->
+                        registrationUseCase(
+                            UserCredentials(
+                                vkAuthenticationResult.token.email ?: kotlin.run {
+                                    sendEvent(RegistrationScreenEvent.CantLoginByVk)
+                                    return@launchViewModelScope
+                                },
+                                vkAuthenticationResult.token.userId.value.toString()
                             )
+                        ).fold(
+                            onFailure = {
+                                sendEvent(
+                                    RegistrationScreenEvent.ShowToast(
+                                        it.message ?: "Something went wrong"
+                                    )
+                                )
+                            }, onSuccess = {
+                                sendEvent(
+                                    RegistrationScreenEvent.GoToMoreInf(
+                                        profile
+                                    )
+                                )
+                            }
                         )
                     },
                     onFailure = {
@@ -90,6 +116,10 @@ class RegistrationViewModel @Inject constructor(
 
     fun onVkAuth() {
         trySendEvent(RegistrationScreenEvent.LoginVk)
+    }
+
+    fun onGoToAuth() {
+        trySendEvent(RegistrationScreenEvent.GoToAuth)
     }
 
     private fun RegistrationScreenState.checkPasswords() = secondPassword == password

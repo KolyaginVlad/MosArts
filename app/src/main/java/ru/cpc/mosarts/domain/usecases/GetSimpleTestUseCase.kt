@@ -10,8 +10,8 @@ import javax.inject.Inject
 abstract class GetSimpleTestUseCase : UseCase<PersistentList<Question>, TestParams>()
 
 class GetSimpleTestUseCaseImpl @Inject constructor(
-	private val testRepository: TestRepository,
+    private val testRepository: TestRepository,
 ) : GetSimpleTestUseCase() {
-	override suspend fun run(args: TestParams): Result<PersistentList<Question>> =
-		testRepository.getSimpleTest(args)
+    override suspend fun run(args: TestParams): Result<PersistentList<Question>> =
+        testRepository.getSimpleTest(args)
 }

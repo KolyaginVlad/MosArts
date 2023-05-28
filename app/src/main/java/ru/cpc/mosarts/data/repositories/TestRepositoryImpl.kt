@@ -17,20 +17,20 @@ import ru.cpc.mosarts.domain.repositories.TestRepository
 import javax.inject.Inject
 
 class TestRepositoryImpl @Inject constructor() : TestRepository {
-	override suspend fun getSimpleTest(args: TestParams): Result<PersistentList<Question>> {
-		return when (args.name) {
+    override suspend fun getSimpleTest(args: TestParams): Result<PersistentList<Question>> {
+        return when (args.name) {
 			NamesOfTest.TextOptions -> optionsTest(args.difficulty)
 			NamesOfTest.MusicImage -> musicTest(args.difficulty)
 			NamesOfTest.VideoMusic -> videoTest(args.difficulty)
 		}
 	}
-	
+
 	override suspend fun sendSimpleTest(answers: TestResults): Result<Unit> {
-		
+
 		delay(1000)
 		return Result.success(Unit)
 	}
-	
+
 	override suspend fun getThemes(): Result<List<ThemeData>> {
 		delay(300)
 		return Result.success(
@@ -54,12 +54,12 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 			)
 		)
 	}
-	
+
 	override suspend fun sendSelectedThemes(themes: List<ThemeData>): Result<Unit> {
 		delay(100)
 		return Result.success(Unit)
 	}
-	
+
 	private fun optionsTest(difficulty: Difficulty): Result<PersistentList<Question>> {
 		when (difficulty) {
 			Difficulty.Easy -> return Result.success(
@@ -97,19 +97,19 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						answerVariants = arrayListOf(
 							AnswerVariant("танцуют"),
 							AnswerVariant("поют"),
-							AnswerVariant("дирижируют"),
-							AnswerVariant("играют на музыкальных инструментах")
-						),
+                            AnswerVariant("дирижируют"),
+                            AnswerVariant("играют на музыкальных инструментах")
+                        ),
 						question = QuestionVal(textQuestion = "Чем занимаются участники хора?"),
 						questionId = 13,
 						cost = 1,
 						rightAnswer = UserAnswer("поют"),
 						explain = "поют. Хор – певческий коллектив, исполняющий вокальную музыку."
 					),
-					
+
 					)
 			)
-			
+
 			Difficulty.Medium -> return Result.success(
 				persistentListOf(
 					Question(
@@ -121,7 +121,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 							AnswerVariant("гармонь \"Хромка\"")
 						),
 						question = QuestionVal(textQuestion = "Как называется инструмент, в котором одна из клавиатур напоминает клавиатуру фортепиано?"),
-						questionId = 21,
+                        questionId = 21,
 						cost = 2,
 						rightAnswer = UserAnswer("аккордеон"),
 						explain = "аккордеон. Аккордеон – музыкальный инструмент, в котором  правая клавиатура фортепианного типа, то есть, напоминает клавиатуру фортепиано."
@@ -130,8 +130,8 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						questionType = QuestionType.TextOptions,
 						answerVariants = arrayListOf(
 							AnswerVariant("4"),
-							AnswerVariant("5"),
-							AnswerVariant("6"),
+                            AnswerVariant("5"),
+                            AnswerVariant("6"),
 							AnswerVariant("8")
 						),
 						question = QuestionVal(textQuestion = "Сколько струн на виолончели?"),
@@ -145,19 +145,19 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						answerVariants = arrayListOf(
 							AnswerVariant("композитор"),
 							AnswerVariant("трубач"),
-							AnswerVariant("скрипач"),
-							AnswerVariant("пианист")
-						),
+                            AnswerVariant("скрипач"),
+                            AnswerVariant("пианист")
+                        ),
 						question = QuestionVal(textQuestion = "Денис Мацуев – …"),
 						questionId = 23,
 						cost = 2,
 						rightAnswer = UserAnswer("пианист"),
 						explain = "пианист. Денис Мацуев – российский пианист, Народный артист РФ, победитель XI Международного конкурса имени П.И. Чайковского. "
 					),
-					
+
 					)
 			)
-			
+
 			Difficulty.Hard -> return Result.success(
 				persistentListOf(
 					Question(
@@ -171,7 +171,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						question = QuestionVal(textQuestion = "Как называется музыкальный спектакль, содержание которого воплощается через музыку и танец?"),
 						questionId = 31,
 						cost = 3,
-						rightAnswer = UserAnswer("балет"),
+                        rightAnswer = UserAnswer("балет"),
 						explain = "балет. Балет – вид сценического искусства, содержание которого выражается в музыкально-хореографических образах."
 					),
 					Question(
@@ -183,7 +183,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 							AnswerVariant("октава")
 						),
 						question = QuestionVal(textQuestion = "Какого музыкального интервала не существует?"),
-						questionId = 32,
+                        questionId = 32,
 						cost = 3,
 						rightAnswer = UserAnswer("минута"),
 						explain = "Музыкальный интервал – расстояние между двумя различными по высоте звуками. Прима, секунда, октава – музыкальные интервалы. Минута не является музыкальным интервалом, минута – единица измерения времени. "
@@ -204,7 +204,7 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 					),
 				)
 			)
-			
+
 			else -> {
 				return Result.success(
 					persistentListOf()
@@ -212,10 +212,10 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 			}
 		}
 	}
-	
-	
+
+
 	private fun musicTest(difficulty: Difficulty): Result<PersistentList<Question>> {
-		when (difficulty) {
+        when (difficulty) {
 			else -> return Result.success(
 				persistentListOf(
 					Question(
@@ -242,15 +242,15 @@ class TestRepositoryImpl @Inject constructor() : TestRepository {
 						),
 						rightAnswer = UserAnswer("Скрипка"),
 						explain = "Скрипка — королева музыкальных инструментов — прошла долгий путь. Её предки встречаются в музыкальных культурах почти всех народов мира. И на деревенском празднике, и в лучшем концертном зале скрипка превосходно играет свою роль — выражает самые глубокие человеческие чувства!"
-					
-					),
-				)
-			)
-		}
-	}
-	
-	private fun videoTest(difficulty: Difficulty): Result<PersistentList<Question>> {
-		when (difficulty) {
+
+                    ),
+                )
+            )
+        }
+    }
+
+    private fun videoTest(difficulty: Difficulty): Result<PersistentList<Question>> {
+        when (difficulty) {
 			else -> return Result.success(
 				persistentListOf(
 					Question(

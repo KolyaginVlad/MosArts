@@ -14,7 +14,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +33,7 @@ import ru.cpc.mosarts.R
 import ru.cpc.mosarts.domain.models.Difficulty
 import ru.cpc.mosarts.domain.models.NamesOfTest
 import ru.cpc.mosarts.domain.models.UserAnswer
+import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
 import ru.cpc.mosarts.ui.test.simpleTest.views.ExplainDialog
 import ru.cpc.mosarts.ui.test.simpleTest.views.Results
 import ru.cpc.mosarts.ui.test.simpleTest.views.SimpleTestQuestion
@@ -46,34 +46,34 @@ fun SimpleTestScreen(
 	test: NamesOfTest,
 	difficulty: Difficulty
 ) {
-	val explainText = remember { mutableStateOf("") }
+    val explainText = remember { mutableStateOf("") }
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
 	val openExplainDialog = remember {
 		state.openExplainDialog
 	}
-	val context = LocalContext.current
-	LaunchedEffect(Unit) {
-		viewModel.init(namesOfTest = test, difficulty = difficulty)
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.init(namesOfTest = test, difficulty = difficulty)
 		viewModel.event.collect {
 			when (it) {
 				is SimpleTestScreenEvent.Error -> Toast.makeText(
 					context, it.text, Toast.LENGTH_LONG
 				).show()
-				
+
 				is SimpleTestScreenEvent.WrongAnswer -> {
 					it.explain?.let { explain ->
 						explainText.value = explain
-					}
-				}
-				
-				is SimpleTestScreenEvent.RightAnswer -> {
-					it.explain?.let { explain ->
-						explainText.value = explain
-					}
-				}
-				
-				is SimpleTestScreenEvent.StartPlaying -> {
-					var player = state.audioPlayer
+                    }
+                }
+
+                is SimpleTestScreenEvent.RightAnswer -> {
+                    it.explain?.let { explain ->
+                        explainText.value = explain
+                    }
+                }
+
+                is SimpleTestScreenEvent.StartPlaying -> {
+                    val player = state.audioPlayer
 					if (player.getDataSource() != it.source) {
 						player.reset()
 						player.setAudioAttributes(
@@ -84,101 +84,90 @@ fun SimpleTestScreen(
 						player.setDataSource(it.source)
 						player.prepareAsync()
 					} else player.start()
-					
+
 				}
 			}
 		}
 	}
 	if (openExplainDialog.value) {
 		ExplainDialog(text = explainText.value, openDialogCustom = openExplainDialog)
+    }
+	if (state.isLoading) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.Center
+		) {
+			CircularProgressIndicator()
+		}
+	} else {
+		SimpleTestScreenContent(
+			state = state,
+			onAnswerChange = viewModel::onAnswerChange,
+			sendTest = viewModel::sendTest,
+			nextQuestion = viewModel::nextQuestion,
+			previousQuestion = viewModel::previousQuestion,
+			startPlayer = viewModel::startPlayer
+		)
 	}
-	SimpleTestScreenContent(
-		state = state,
-		onAnswerChange = viewModel::onAnswerChange,
-		sendTest = viewModel::sendTest,
-		nextQuestion = viewModel::nextQuestion,
-		previousQuestion = viewModel::previousQuestion,
-		startPlayer = viewModel::startPlayer
-	)
 }
 
 @Composable
 fun SimpleTestScreenContent(
-	state: SimpleTestScreenState,
-	onAnswerChange: (UserAnswer) -> Unit,
-	sendTest: () -> Unit,
-	nextQuestion: () -> Unit,
-	previousQuestion: () -> Unit,
-	startPlayer: (String) -> Unit,
-	modifier: Modifier = Modifier,
+    state: SimpleTestScreenState,
+    onAnswerChange: (UserAnswer) -> Unit,
+    sendTest: () -> Unit,
+    nextQuestion: () -> Unit,
+    previousQuestion: () -> Unit,
+    startPlayer: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-	Scaffold(
-		topBar = {
-			TopAppBar(title = { Text(stringResource(id = R.string.test)) })
-		}
-	) {
-		if (state.isLoading) {
-			Box(
-				modifier = Modifier
-					.fillMaxSize()
-					.padding(it),
-				contentAlignment = Alignment.Center
-			) {
-				CircularProgressIndicator()
-			}
-		} else {
-			Column(
-				modifier = modifier
-					.padding(it)
-					.fillMaxSize(),
-				verticalArrangement = Arrangement.Center,
-				horizontalAlignment = Alignment.CenterHorizontally
-			) {
-				Card(
-					shape = RoundedCornerShape(5),
-					elevation = 10.dp,
-					modifier = Modifier.padding(20.dp)
-				) {
-					Column(
-						modifier = modifier,
-					) {
-						if (!state.finished) {
-							state.currentQuestion?.let {
-								state.questions[it].let { question ->
-									SimpleTestQuestion(
-										question = question,
-										answer = state.answers[it],
-										onAnswerChange = onAnswerChange,
-										modifier = Modifier.fillMaxWidth(),
-										player = state.audioPlayer,
-										startPlayer = startPlayer
-									)
-								}
-							}
-							/*	Row(
-								horizontalArrangement = Arrangement.SpaceBetween,
-								modifier = Modifier.fillMaxWidth()
-							) {
-								Button(onClick = previousQuestion) {
-									Text(text = stringResource(id = R.string.previous_question))
-								}
-								
-								Button(onClick = nextQuestion) {
-									Text(text = stringResource(id = R.string.next_question))
-								}
-							}*/
-							Button(
-								onClick = sendTest,
-								modifier = Modifier.align(CenterHorizontally)
-							) {
-								Text(text = stringResource(id = R.string.finish_test))
-							}
-						} else {
-							Results(points = state.results.points)
-						}
-					}
-				}
-			}
-		}
-	}
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = CenterHorizontally
+    ) {
+        Card(
+            shape = RoundedCornerShape(5),
+            elevation = 10.dp,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Column(
+                modifier = modifier.padding(16.dp),
+            ) {
+                if (!state.finished) {
+                    state.currentQuestion?.let {
+                        state.questions[it].let { question ->
+                            SimpleTestQuestion(
+                                question = question,
+                                answer = state.answers[it],
+                                onAnswerChange = onAnswerChange,
+                                modifier = Modifier.fillMaxWidth(),
+                                player = state.audioPlayer,
+                                startPlayer = startPlayer
+                            )
+                        }
+                    }
+                    /*	Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Button(onClick = previousQuestion) {
+                                Text(text = stringResource(id = R.string.previous_question))
+                            }
+
+                            Button(onClick = nextQuestion) {
+                                Text(text = stringResource(id = R.string.next_question))
+                            }
+                        }*/
+                    Button(onClick = sendTest, modifier = Modifier.align(CenterHorizontally)) {
+                        Text(text = stringResource(id = R.string.finish_test))
+                    }
+                } else {
+                    Results(points = state.results.points)
+                }
+            }
+        }
+    }
 }

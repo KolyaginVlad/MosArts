@@ -5,11 +5,11 @@ import ru.cpc.mosarts.domain.models.ProfileInfo
 import ru.cpc.mosarts.domain.repositories.VkRepository
 import javax.inject.Inject
 
-abstract class GetVkProfileInfoUseCase: NoArgsUseCase<ProfileInfo>()
+abstract class GetVkProfileInfoUseCase : NoArgsUseCase<ProfileInfo>()
 
 class GetVkProfileInfoUseCaseImpl @Inject constructor(
-    private val vkRepository: VkRepository
-): GetVkProfileInfoUseCase() {
+    private val vkRepository: VkRepository,
+) : GetVkProfileInfoUseCase() {
     override suspend fun run(): Result<ProfileInfo> = runCatching {
         vkRepository.getProfileInfo()
     }

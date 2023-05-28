@@ -8,8 +8,8 @@ import javax.inject.Inject
 abstract class RegistrationUseCase : UseCase<Unit, UserCredentials>()
 
 class RegistrationUseCaseImpl @Inject constructor(
-	private val userRepository: UserRepository,
+    private val userRepository: UserRepository,
 ) : RegistrationUseCase() {
-	override suspend fun run(args: UserCredentials): Result<Unit> =
-		userRepository.registration(args)
+    override suspend fun run(args: UserCredentials): Result<Unit> =
+        userRepository.registration(args)
 }

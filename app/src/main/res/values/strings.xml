@@ -15,7 +15,7 @@
     <string name="auth_by_vk">Auth by VK</string>
     <string name="select_themes">Select the areas of interest</string>
     <string name="done">Done</string>
-    <string name="finish_test"> finish test</string>
+    <string name="finish_test">Finish test</string>
     <string name="next_question"> next question </string>
     <string name="previous_question"> previous question </string>
     <string name="test_is_finished"> Test is finished </string>
@@ -37,4 +37,11 @@
         <item quantity="many"> points</item>
         <item quantity="other"> points</item>
     </plurals>
+    <string name="ok">OK</string>
+    <string name="i_have_account">I\'m already registered</string>
+    <string name="register">Register</string>
+    <string name="cant_login_by_vk">You cannot log in via VK because you do not have an email address</string>
+    <string name="school_map">Schools map</string>
+    <string name="theme">Direction of study</string>
+    <string name="not_selected">Please select at least one direction</string>
 </resources>
