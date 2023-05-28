@@ -14,7 +14,7 @@ import ru.cpc.mosarts.utils.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SimpleTestScreenViewModel @Inject constructor(
+class SimpleTestViewModel @Inject constructor(
     private val getSimpleTestUseCase: GetSimpleTestUseCase,
     private val sendSimpleTestUseCase: SendSimpleTestUseCase,
 ) : BaseViewModel<SimpleTestScreenState, SimpleTestScreenEvent>(SimpleTestScreenState()) {

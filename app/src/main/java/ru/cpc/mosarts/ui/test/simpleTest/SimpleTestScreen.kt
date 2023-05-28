@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,10 +45,10 @@ import ru.cpc.mosarts.utils.navigateWithClearBackStack
 @MainNavGraph
 @Composable
 fun SimpleTestScreen(
-	navigator: DestinationsNavigator,
-	viewModel: SimpleTestScreenViewModel = hiltViewModel(),
-	test: NamesOfTest,
-	difficulty: Difficulty
+    navigator: DestinationsNavigator,
+    viewModel: SimpleTestViewModel = hiltViewModel(),
+    test: NamesOfTest,
+    difficulty: Difficulty
 ) {
     val explainText = remember { mutableStateOf("") }
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
