@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -19,6 +19,7 @@ import ru.cpc.mosarts.ui.views.Spacer
 fun Results(
     points: Int,
     modifier: Modifier = Modifier,
+    onBackToTests: () -> Unit = { },
 ) {
     Column(modifier) {
         Text(
@@ -28,7 +29,7 @@ fun Results(
             color = Black,
             textAlign = TextAlign.Center
         )
-        Spacer(size = 25.dp)
+        Spacer(size = 24.dp)
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.test_points) + " " + points.toString() + " " + pluralStringResource(
@@ -39,5 +40,12 @@ fun Results(
             color = Black,
             textAlign = TextAlign.Center
         )
+        Spacer(size = 24.dp)
+        TextButton(modifier = Modifier.fillMaxWidth(), onClick = onBackToTests) {
+            Text(
+                text = stringResource(id = R.string.back_to_tests),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

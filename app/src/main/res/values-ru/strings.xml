@@ -41,4 +41,5 @@
     <string name="school_map">Карта школ</string>
     <string name="theme">Направление обучения</string>
     <string name="not_selected">Пожалуйста, выберите хотя бы одно направление</string>
+    <string name="back_to_tests">Вернуться к тестам</string>
 </resources>

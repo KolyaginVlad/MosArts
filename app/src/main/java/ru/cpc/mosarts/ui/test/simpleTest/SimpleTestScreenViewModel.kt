@@ -47,9 +47,14 @@ class SimpleTestScreenViewModel @Inject constructor(
 				} else sendEvent(
 					SimpleTestScreenEvent.WrongAnswer(curQuestion()?.explain)
 				)
-				currentState.openExplainDialog.value=true
-                delay(1500)
-                nextQuestion()
+				if (curQuestion()?.explain.isNullOrBlank()) {
+					delay(1500)
+					nextQuestion()
+				} else {
+					updateState {
+						it.copy(openExplainDialog = true)
+					}
+				}
             }
         }
     }
@@ -88,9 +93,8 @@ class SimpleTestScreenViewModel @Inject constructor(
 	}
 
 	fun sendTest() {
-		currentState.openExplainDialog.value=false
 		updateState {
-			it.copy(isLoading = true)
+			it.copy(isLoading = true, openExplainDialog = false)
 		}
 		launchViewModelScope {
 			sendSimpleTestUseCase(currentState.results).fold(
@@ -116,11 +120,10 @@ class SimpleTestScreenViewModel @Inject constructor(
 		if (currentState.questions.size - 1 > currentState.currentQuestion ?: 0) {
 			updateState {
 				it.copy(
-					currentQuestion =
-					it.currentQuestion?.plus(1),
+					currentQuestion = it.currentQuestion?.plus(1),
+					openExplainDialog = false
 				)
 			}
-			currentState.openExplainDialog.value=false
         } else sendTest()
     }
 
@@ -142,5 +145,13 @@ class SimpleTestScreenViewModel @Inject constructor(
             )
         }
     }
+
+    fun onDismissExplain() {
+		nextQuestion()
+    }
+
+	fun onBackToTests() {
+		trySendEvent(SimpleTestScreenEvent.BackToTests)
+	}
 }
 

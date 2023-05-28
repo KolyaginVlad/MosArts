@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -34,11 +36,14 @@ import ru.cpc.mosarts.domain.models.Difficulty
 import ru.cpc.mosarts.domain.models.NamesOfTest
 import ru.cpc.mosarts.domain.models.UserAnswer
 import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
+import ru.cpc.mosarts.ui.destinations.TestSelectScreenDestination
 import ru.cpc.mosarts.ui.test.simpleTest.views.ExplainDialog
-import ru.cpc.mosarts.ui.test.simpleTest.views.Results
 import ru.cpc.mosarts.ui.test.simpleTest.views.SimpleTestQuestion
+import ru.cpc.mosarts.ui.test.simpleTest.views.Results
+import ru.cpc.mosarts.utils.navigateWithClearBackStack
 
 @Destination
+@MainNavGraph
 @Composable
 fun SimpleTestScreen(
 	navigator: DestinationsNavigator,
@@ -48,9 +53,6 @@ fun SimpleTestScreen(
 ) {
     val explainText = remember { mutableStateOf("") }
 	val state by viewModel.screenState.collectAsStateWithLifecycle()
-	val openExplainDialog = remember {
-		state.openExplainDialog
-	}
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.init(namesOfTest = test, difficulty = difficulty)
@@ -86,11 +88,15 @@ fun SimpleTestScreen(
 					} else player.start()
 
 				}
-			}
+
+                SimpleTestScreenEvent.BackToTests -> navigator.navigateWithClearBackStack(
+                    TestSelectScreenDestination
+                )
+            }
 		}
 	}
-	if (openExplainDialog.value) {
-		ExplainDialog(text = explainText.value, openDialogCustom = openExplainDialog)
+	if (state.openExplainDialog) {
+		ExplainDialog(text = explainText.value, onDismissRequest = viewModel::onDismissExplain)
     }
 	if (state.isLoading) {
 		Box(
@@ -107,7 +113,8 @@ fun SimpleTestScreen(
 			sendTest = viewModel::sendTest,
 			nextQuestion = viewModel::nextQuestion,
 			previousQuestion = viewModel::previousQuestion,
-			startPlayer = viewModel::startPlayer
+			startPlayer = viewModel::startPlayer,
+            onBackToTests = viewModel::onBackToTests
 		)
 	}
 }
@@ -119,6 +126,7 @@ fun SimpleTestScreenContent(
     sendTest: () -> Unit,
     nextQuestion: () -> Unit,
     previousQuestion: () -> Unit,
+    onBackToTests: () -> Unit,
     startPlayer: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -134,20 +142,19 @@ fun SimpleTestScreenContent(
             modifier = Modifier.padding(20.dp)
         ) {
             Column(
-                modifier = modifier.padding(16.dp),
+                modifier = modifier
+                    .padding(16.dp),
             ) {
                 if (!state.finished) {
                     state.currentQuestion?.let {
-                        state.questions[it].let { question ->
-                            SimpleTestQuestion(
-                                question = question,
-                                answer = state.answers[it],
-                                onAnswerChange = onAnswerChange,
-                                modifier = Modifier.fillMaxWidth(),
-                                player = state.audioPlayer,
-                                startPlayer = startPlayer
-                            )
-                        }
+                        SimpleTestQuestion(
+                            question = state.questions[it],
+                            answer = state.answers[it],
+                            onAnswerChange = onAnswerChange,
+                            modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
+                            player = state.audioPlayer,
+                            startPlayer = startPlayer
+                        )
                     }
                     /*	Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -165,7 +172,7 @@ fun SimpleTestScreenContent(
                         Text(text = stringResource(id = R.string.finish_test))
                     }
                 } else {
-                    Results(points = state.results.points)
+                    Results(points = state.results.points, onBackToTests = onBackToTests)
                 }
             }
         }

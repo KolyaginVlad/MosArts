@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +51,6 @@ fun DifficultyDialog(
 			color = Color.Transparent,
 			modifier = modifier.fillMaxWidth(0.95F)
 		) {
-			
 			DifficultyDialogUi(
 				openDialogCustom = openDialogCustom,
 				onSubmit = onSubmit,
@@ -106,35 +106,33 @@ fun DifficultyDialogUi(
 					.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
-				Button(
+				TextButton(
 					onClick = {
 						onSubmit(difficulty.value)
 						openDialogCustom.value = !openDialogCustom.value
 					},
-					modifier = Modifier,
+					modifier = Modifier.padding(12.dp),
 					colors = ButtonDefaults.buttonColors(
 						backgroundColor = MaterialTheme.colors.primaryVariant,
 						contentColor = MaterialTheme.colors.onPrimary
 					)
 				) {
 					Text(
-						modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp),
-						text = stringResource(id = R.string.submit).uppercase(Locale.ROOT)
+						text = stringResource(id = R.string.submit).uppercase(Locale.getDefault())
 					)
 				}
-				Button(
+				TextButton(
 					onClick = {
 						openDialogCustom.value = !openDialogCustom.value
 					},
-					modifier = Modifier,
+					modifier = Modifier.padding(12.dp),
 					colors = ButtonDefaults.buttonColors(
 						backgroundColor = MaterialTheme.colors.primaryVariant,
 						contentColor = MaterialTheme.colors.onPrimary
 					)
 				) {
 					Text(
-						modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp),
-						text = stringResource(id = R.string.cancel).uppercase(Locale.ROOT)
+						text = stringResource(id = R.string.cancel).uppercase(Locale.getDefault())
 					)
 				}
 			}

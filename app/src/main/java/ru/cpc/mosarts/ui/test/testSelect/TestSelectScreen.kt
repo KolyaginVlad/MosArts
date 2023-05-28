@@ -18,17 +18,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.domain.models.NamesOfTest
+import ru.cpc.mosarts.ui.activities.utils.MainNavGraph
 import ru.cpc.mosarts.ui.destinations.SimpleTestScreenDestination
 import ru.cpc.mosarts.ui.test.testSelect.views.DifficultyDialog
 import ru.cpc.mosarts.ui.test.utils.toStringId
 
-
+@MainNavGraph
 @Destination
 @Composable
 fun TestSelectScreen(
@@ -104,7 +106,8 @@ fun VariantOfTest(
 		Text(
 			text = stringResource(id = namesOfTest.toStringId()),
 			modifier = Modifier.padding(40.dp),
-			style = MaterialTheme.typography.h4
+			style = MaterialTheme.typography.h4,
+			textAlign = TextAlign.Center
 		)
 	}
 }

@@ -60,7 +60,6 @@ private fun Content(
     ) {
         FormTextField(
             modifier = Modifier
-                .height(70.dp)
                 .fillMaxWidth()
                 .padding(8.dp),
             value = state.filter,

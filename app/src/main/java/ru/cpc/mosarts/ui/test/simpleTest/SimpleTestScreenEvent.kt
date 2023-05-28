@@ -3,6 +3,7 @@ package ru.cpc.mosarts.ui.test.simpleTest
 import ru.cpc.mosarts.utils.base.Event
 
 sealed class SimpleTestScreenEvent : Event() {
+    object BackToTests : SimpleTestScreenEvent()
 
     class Error(val text: String) : SimpleTestScreenEvent()
 
