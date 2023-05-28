@@ -2,7 +2,6 @@ package ru.cpc.mosarts.utils.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ru.cpc.mosarts.utils.log.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.cpc.mosarts.utils.log.Logger
 import javax.inject.Inject
 
 /**
@@ -120,7 +120,7 @@ abstract class BaseViewModel<STATE : State, EVENT : Event>(initialState: STATE) 
     protected fun <T> Flow<T>.subscribe(
         onStart: suspend FlowCollector<T>.() -> Unit = {},
         onComplete: suspend FlowCollector<T>.(Throwable?) -> Unit = {},
-        onEach: suspend (T) -> Unit
+        onEach: suspend (T) -> Unit,
     ) =
         this.onStart(onStart)
             .onEach(onEach)

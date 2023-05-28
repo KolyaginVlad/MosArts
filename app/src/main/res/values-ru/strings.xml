@@ -14,7 +14,7 @@
     <string name="auth_by_vk">Авторизоваться через VK</string>
     <string name="select_themes">Выберите интересующие направления</string>
     <string name="done">Готово</string>
-    <string name="finish_test">закончить тест</string>
+    <string name="finish_test">Закончить тест</string>
     <string name="next_question"> следующий вопрос </string>
     <string name="previous_question"> предыдущий вопрос </string>
     <string name="test_is_finished"> Тест завершён </string>
@@ -29,6 +29,8 @@
     <string name="ok">OK</string>
     <string name="i_have_account">Я уже зарегистрирован</string>
     <string name="register">Зарегистрироваться</string>
-    <string name="cant_login_by_vk">You cannot log in via VK because you do not have an email address</string>
+    <string name="cant_login_by_vk">Вы не можете авторизоваться через вк так как у вас не указана почта</string>
     <string name="school_map">Карта школ</string>
+    <string name="theme">Направление обучения</string>
+    <string name="not_selected">Пожалуйста, выберите хотя бы одно направление</string>
 </resources>

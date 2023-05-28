@@ -9,5 +9,7 @@ data class MoreInfScreenState(
     val surname: String = "",
     val avatar: String = "",// изменить
     val fatherName: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val nameError: Boolean = false,
+    val surnameError: Boolean = false,
 ) : State()

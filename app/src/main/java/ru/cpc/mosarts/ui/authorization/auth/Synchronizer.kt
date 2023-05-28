@@ -13,7 +13,7 @@ object Synchronizer {
     private val _login = MutableSharedFlow<List<VKScope>>(extraBufferCapacity = 1)
     val login = _login.asSharedFlow()
 
-    fun sendResult(result: VKAuthenticationResult){
+    fun sendResult(result: VKAuthenticationResult) {
         _token.tryEmit(result)
     }
 

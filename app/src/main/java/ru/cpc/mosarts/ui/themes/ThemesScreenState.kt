@@ -7,5 +7,5 @@ import ru.cpc.mosarts.utils.base.State
 
 data class ThemesScreenState(
     val isLoading: Boolean = true,
-    val themes: PersistentList<ThemeUiData> = persistentListOf()
-): State()
+    val themes: PersistentList<ThemeUiData> = persistentListOf(),
+) : State()

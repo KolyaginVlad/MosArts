@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
@@ -134,7 +133,12 @@ fun Map(
                 userLocation?.let { point ->
                     it.map.mapObjects.addPlacemark(
                         point,
-                        ImageProvider.fromBitmap(getBitmap(it.context, R.drawable.baseline_smartphone_24))
+                        ImageProvider.fromBitmap(
+                            getBitmap(
+                                it.context,
+                                R.drawable.baseline_smartphone_24
+                            )
+                        )
                     )
                 }
             }

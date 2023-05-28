@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 
 class Debounce(
-    private val delay: Long = DELAY_DEFAULT
+    private val delay: Long = DELAY_DEFAULT,
 ) {
     private val handler by lazy { Looper.myLooper()?.let(::Handler) }
     private var runnable: Runnable? = null
@@ -16,7 +16,7 @@ class Debounce(
         handler?.postDelayed(Runnable { block() }.also { runnable = it }, delay)
     }
 
-    fun cancel(){
+    fun cancel() {
         runnable?.let {
             handler?.removeCallbacks(it)
         }

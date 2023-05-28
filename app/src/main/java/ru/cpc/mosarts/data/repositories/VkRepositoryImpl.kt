@@ -15,7 +15,7 @@ import ru.cpc.mosarts.domain.repositories.VkRepository
 import javax.inject.Inject
 
 class VkRepositoryImpl @Inject constructor(
-    private val preferences: SharedPreferences
+    private val preferences: SharedPreferences,
 ) : VkRepository {
 
     override var vkToken: String?
@@ -26,7 +26,7 @@ class VkRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun getProfileInfo() = withContext(Dispatchers.IO)  {
+    override suspend fun getProfileInfo() = withContext(Dispatchers.IO) {
         VK.executeSync(GetProfileUser())
     }
 
@@ -35,7 +35,7 @@ class VkRepositoryImpl @Inject constructor(
     }
 }
 
-class GetProfileUser: ApiCommand<ProfileInfo>() {
+class GetProfileUser : ApiCommand<ProfileInfo>() {
     override fun onExecute(manager: VKApiManager): ProfileInfo {
         val call = VKMethodCall.Builder()
             .method("account.getProfileInfo")
@@ -44,7 +44,7 @@ class GetProfileUser: ApiCommand<ProfileInfo>() {
         return manager.execute(call, ProfileInfoResponseApiParser())
     }
 
-    class ProfileInfoResponseApiParser: VKApiJSONResponseParser<ProfileInfo> {
+    class ProfileInfoResponseApiParser : VKApiJSONResponseParser<ProfileInfo> {
         override fun parse(responseJson: JSONObject): ProfileInfo {
             val json = responseJson.getJSONObject("response")
             return ProfileInfo(

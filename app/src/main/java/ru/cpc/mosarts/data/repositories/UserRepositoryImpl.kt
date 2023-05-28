@@ -7,44 +7,17 @@ import ru.cpc.mosarts.domain.repositories.UserRepository
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor() : UserRepository {
-	override suspend fun login(userCredentials: UserCredentials): Result<Unit> {
-		val user = userCredentials.mapToDtoe()
-		//delay(1000)
-		return if (Math.random() > 0.5) {
-			Result.success(Unit)
-		} else {
-			Result.failure(
-				IllegalAccessException(
-					"Man, you loser!"
-				)
-			)
-		}
-	}
-	
-	override suspend fun registration(userCredentials: UserCredentials): Result<Unit> {
-		//delay(1000)
-		return if (Math.random() > 0.5) {
-			Result.success(Unit)
-		} else {
-			Result.failure(
-				IllegalAccessException(
-					"Man you loser!"
-				)
-			)
-		}
-	}
-	
-	override suspend fun moreInf(moreInf: MoreInf): Result<Unit> {
-		//delay(1000)
-		return if (Math.random() > 0.5) {
-			Result.success(Unit)
-		} else {
-			Result.failure(
-				IllegalAccessException(
-					"Man you loser!"
-				)
-			)
-		}
-	}
-	
+    override suspend fun login(userCredentials: UserCredentials): Result<Unit> {
+        val user = userCredentials.mapToDtoe()
+        return Result.success(Unit)
+    }
+
+    override suspend fun registration(userCredentials: UserCredentials): Result<Unit> {
+        return Result.success(Unit)
+    }
+
+    override suspend fun moreInf(moreInf: MoreInf): Result<Unit> {
+        return Result.success(Unit)
+    }
+
 }

@@ -22,7 +22,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import ru.cpc.mosarts.R
 import ru.cpc.mosarts.ui.destinations.ActivitiesScreenDestination
-import ru.cpc.mosarts.ui.destinations.SchoolMapScreenDestination
+import ru.cpc.mosarts.ui.theme.Black
 import ru.cpc.mosarts.ui.themes.models.ThemeUiData
 import ru.cpc.mosarts.ui.themes.views.ThemesCheckBoxGroup
 import ru.cpc.mosarts.ui.views.Loading
@@ -46,6 +46,10 @@ fun ThemesScreen(
                 ThemesScreenEvent.GoToMap -> navigator.navigateWithClearBackStack(
                     ActivitiesScreenDestination
                 )
+
+                ThemesScreenEvent.NotSelected -> Toast.makeText(
+                    context, context.getText(R.string.not_selected), Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -77,7 +81,7 @@ private fun Content(
             if (state.isLoading) {
                 Loading()
             } else {
-                Text(text = stringResource(id = R.string.select_themes))
+                Text(text = stringResource(id = R.string.select_themes), color = Black)
                 ThemesCheckBoxGroup(listOfThemes = state.themes, onThemeSelected = onSelectTheme)
                 Button(onClick = onDone) {
                     Text(text = stringResource(id = R.string.done))

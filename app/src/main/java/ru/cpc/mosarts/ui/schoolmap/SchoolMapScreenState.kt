@@ -7,7 +7,7 @@ import ru.cpc.mosarts.ui.models.SchoolMapInfo
 import ru.cpc.mosarts.utils.base.State
 
 data class SchoolMapScreenState(
-	val listOfSchools: ImmutableList<SchoolMapInfo> = persistentListOf(),
-	val alertDialogInfo: School? = null,
-	val filter: String = ""
+    val listOfSchools: ImmutableList<SchoolMapInfo> = persistentListOf(),
+    val alertDialogInfo: School? = null,
+    val filter: String = "",
 ) : State()

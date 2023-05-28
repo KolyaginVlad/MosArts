@@ -14,7 +14,7 @@ internal class ResultCallAdapterFactory : CallAdapter.Factory() {
     override fun get(
         returnType: Type,
         annotations: Array<Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): CallAdapter<*, *>? {
         if (getRawType(returnType) != Call::class.java) return null
         check(returnType is ParameterizedType) { "Return type must be a parameterized type." }

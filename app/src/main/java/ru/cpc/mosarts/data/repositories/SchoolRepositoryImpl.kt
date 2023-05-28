@@ -1,6 +1,5 @@
 package ru.cpc.mosarts.data.repositories
 
-import kotlinx.collections.immutable.persistentListOf
 import ru.cpc.mosarts.domain.models.School
 import ru.cpc.mosarts.domain.models.ThemeData
 import ru.cpc.mosarts.domain.repositories.SchoolRepository

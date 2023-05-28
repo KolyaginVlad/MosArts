@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 abstract class FlowUseCase<out Type, Args> {
 
     private val arguments = MutableSharedFlow<Args>(replay = 1)
+
     @kotlinx.coroutines.ExperimentalCoroutinesApi
     private val latestFlow by lazy {
         arguments.flatMapLatest {
@@ -29,7 +30,7 @@ abstract class FlowUseCase<out Type, Args> {
      *
      * @param args аргументы
      */
-    operator fun invoke(args: Args) : FlowUseCase<Type, Args> {
+    operator fun invoke(args: Args): FlowUseCase<Type, Args> {
         arguments.tryEmit(args)
         return this
     }

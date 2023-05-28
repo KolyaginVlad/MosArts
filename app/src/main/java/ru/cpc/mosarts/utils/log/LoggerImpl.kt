@@ -43,6 +43,7 @@ class LoggerImpl @Inject constructor(
 //        analytics.logEvent(event.name, bundle)
         info("Sending event ${event.name} with args ${event.arguments}")
     }
+
     companion object {
         const val TAG = "MyCompany"
     }

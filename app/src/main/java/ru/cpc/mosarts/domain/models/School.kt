@@ -9,5 +9,5 @@ data class School(
     val address: String,
     val email: String,
     val description: String,
-    val themes: List<ThemeData>
+    val themes: List<ThemeData>,
 )
